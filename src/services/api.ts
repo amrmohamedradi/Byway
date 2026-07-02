@@ -164,8 +164,18 @@ const notifyApiError = (message: string) => {
 const request = async <T>(path: string, options: RequestInit = {}, retry = true): Promise<T> => {
   let response: Response;
 
+  // Validate API_BASE_URL before making request
+  if (!API_BASE_URL || API_BASE_URL.trim().length === 0) {
+    const message = 'API service is not properly configured. The backend API URL (VITE_API_BASE_URL) is missing. ' +
+      'Please ensure the environment variable is set in your deployment.';
+    notifyApiError(message);
+    throw new Error(message);
+  }
+
+  const requestUrl = `${API_BASE_URL}${path}`;
+
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(requestUrl, {
       ...options,
       headers: buildHeaders(options),
     });

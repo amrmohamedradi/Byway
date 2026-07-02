@@ -21,7 +21,35 @@ export interface AuthSession {
 
 type TokenPayload = Record<string, unknown>;
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
+const DEFAULT_API_BASE_URL = 'http://bywayapi.runasp.net';
+
+const normalizeApiBaseUrl = (url: string | undefined): string => {
+  if (!url || typeof url !== 'string' || url.trim().length === 0) {
+    return DEFAULT_API_BASE_URL;
+  }
+  return url.replace(/\/+$/, '');
+};
+
+const firstConfiguredUrl = (...urls: Array<string | undefined>): string | undefined => {
+  const configured = urls.find((url) => typeof url === 'string' && url.trim().length > 0)?.trim();
+  return configured;
+};
+
+export const API_BASE_URL = normalizeApiBaseUrl(
+  firstConfiguredUrl(
+    import.meta.env.VITE_API_BASE_URL,
+    import.meta.env.VITE_API_URL
+  ) ?? DEFAULT_API_BASE_URL
+);
+
+// Validate that API_BASE_URL is properly set and warn in console if it appears to be incorrect
+if (!API_BASE_URL || API_BASE_URL.trim().length === 0 || API_BASE_URL === '/') {
+  console.error(
+    `[Auth Service] Critical: API_BASE_URL is not properly configured. ` +
+    `Expected a valid backend URL, but got: "${API_BASE_URL}". ` +
+    `Please ensure VITE_API_BASE_URL environment variable is set in your deployment.`
+  );
+}
 const TOKEN_KEY = 'byway_auth_token';
 const REFRESH_TOKEN_KEY = 'byway_refresh_token';
 
@@ -96,8 +124,18 @@ const userFromToken = (token: string): User => {
 const authRequest = async (path: string, body: unknown): Promise<AuthSession> => {
   let response: Response;
 
+  // Validate API_BASE_URL before making request
+  if (!API_BASE_URL || API_BASE_URL.trim().length === 0) {
+    throw new Error(
+      'Authentication service is not properly configured. The backend API URL (VITE_API_BASE_URL) is missing. ' +
+      'Please ensure the environment variable is set in your deployment.'
+    );
+  }
+
+  const requestUrl = `${API_BASE_URL}${path}`;
+
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(requestUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
