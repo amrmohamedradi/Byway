@@ -1,6 +1,6 @@
 # Byway API — Complete Documentation
 
-> **Base URL:** `http://bywayapi.runasp.net`  
+> **Base URL:** `https://bywayapi.runasp.net`  
 > **OpenAPI Version:** 3.0.1  
 > **API Version:** 1.0
 
@@ -181,7 +181,7 @@ Registers a new user account. The new user is assigned the `User` role by defaul
 **Example Request**
 
 ```bash
-curl -X POST "http://bywayapi.runasp.net/api/Auth/register" \
+curl -X POST "https://bywayapi.runasp.net/api/Auth/register" \
   -H "Content-Type: application/json" \
   -d '{
     "firstName": "Ahmed",
@@ -243,7 +243,7 @@ Authenticates an existing user and returns JWT tokens.
 **Example Request**
 
 ```bash
-curl -X POST "http://bywayapi.runasp.net/api/Auth/login" \
+curl -X POST "https://bywayapi.runasp.net/api/Auth/login" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "ahmed@mail.com",
@@ -297,7 +297,7 @@ Exchanges a valid refresh token for a new access token.
 **Example Request**
 
 ```bash
-curl -X POST "http://bywayapi.runasp.net/api/Auth/refresh" \
+curl -X POST "https://bywayapi.runasp.net/api/Auth/refresh" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "ahmed@mail.com",
@@ -352,7 +352,7 @@ Returns the current user's shopping cart with all items and price summary.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Cart" \
+curl -X GET "https://bywayapi.runasp.net/api/Cart" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -426,7 +426,7 @@ Adds a course to the current user's cart.
 **Example Request**
 
 ```bash
-curl -X POST "http://bywayapi.runasp.net/api/Cart/a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
+curl -X POST "https://bywayapi.runasp.net/api/Cart/a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -472,7 +472,7 @@ Removes a course from the current user's cart.
 **Example Request**
 
 ```bash
-curl -X DELETE "http://bywayapi.runasp.net/api/Cart/a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
+curl -X DELETE "https://bywayapi.runasp.net/api/Cart/a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -519,7 +519,7 @@ Returns all available course categories.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Category"
+curl -X GET "https://bywayapi.runasp.net/api/Category"
 ```
 
 **Success Response — 200 OK**
@@ -568,7 +568,7 @@ Returns a single category by its ID.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Category/c1d2e3f4-a5b6-7890-cdef-012345678901"
+curl -X GET "https://bywayapi.runasp.net/api/Category/c1d2e3f4-a5b6-7890-cdef-012345678901"
 ```
 
 **Success Response — 200 OK**
@@ -617,7 +617,7 @@ Creates a new category. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X POST "http://bywayapi.runasp.net/api/Category" \
+curl -X POST "https://bywayapi.runasp.net/api/Category" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -680,7 +680,7 @@ Updates an existing category by ID. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X PUT "http://bywayapi.runasp.net/api/Category/c1d2e3f4-a5b6-7890-cdef-012345678901" \
+curl -X PUT "https://bywayapi.runasp.net/api/Category/c1d2e3f4-a5b6-7890-cdef-012345678901" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -731,7 +731,7 @@ Deletes a category by ID. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X DELETE "http://bywayapi.runasp.net/api/Category/c1d2e3f4-a5b6-7890-cdef-012345678901" \
+curl -X DELETE "https://bywayapi.runasp.net/api/Category/c1d2e3f4-a5b6-7890-cdef-012345678901" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -787,7 +787,7 @@ Returns a paginated list of courses. Supports search by keyword.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Course?pageNumber=1&pageSize=10&search=react"
+curl -X GET "https://bywayapi.runasp.net/api/Course?pageNumber=1&pageSize=10&search=react"
 ```
 
 **Success Response — 200 OK**
@@ -835,7 +835,7 @@ Returns the details of a single course by its ID.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Course/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+curl -X GET "https://bywayapi.runasp.net/api/Course/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 ```
 
 **Success Response — 200 OK**
@@ -913,7 +913,7 @@ Creates a new course. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X POST "http://bywayapi.runasp.net/api/Course" \
+curl -X POST "https://bywayapi.runasp.net/api/Course" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -977,7 +977,7 @@ Updates an existing course. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X PUT "http://bywayapi.runasp.net/api/Course/a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
+curl -X PUT "https://bywayapi.runasp.net/api/Course/a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -1030,7 +1030,7 @@ Deletes a course by ID. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X DELETE "http://bywayapi.runasp.net/api/Course/a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
+curl -X DELETE "https://bywayapi.runasp.net/api/Course/a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -1087,7 +1087,7 @@ Returns a paginated list of instructors.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Instructor?pageNumber=1&pageSize=10" \
+curl -X GET "https://bywayapi.runasp.net/api/Instructor?pageNumber=1&pageSize=10" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -1135,7 +1135,7 @@ Returns a single instructor by ID.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Instructor/f5a6b7c8-d9e0-1234-fabc-567890123456" \
+curl -X GET "https://bywayapi.runasp.net/api/Instructor/f5a6b7c8-d9e0-1234-fabc-567890123456" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -1184,7 +1184,7 @@ Creates a new instructor. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X POST "http://bywayapi.runasp.net/api/Instructor" \
+curl -X POST "https://bywayapi.runasp.net/api/Instructor" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -1235,7 +1235,7 @@ Updates an existing instructor. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X PUT "http://bywayapi.runasp.net/api/Instructor/f5a6b7c8-d9e0-1234-fabc-567890123456" \
+curl -X PUT "https://bywayapi.runasp.net/api/Instructor/f5a6b7c8-d9e0-1234-fabc-567890123456" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -1267,7 +1267,7 @@ Deletes an instructor by ID. **Admin only.**
 **Example Request**
 
 ```bash
-curl -X DELETE "http://bywayapi.runasp.net/api/Instructor/f5a6b7c8-d9e0-1234-fabc-567890123456" \
+curl -X DELETE "https://bywayapi.runasp.net/api/Instructor/f5a6b7c8-d9e0-1234-fabc-567890123456" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -1305,7 +1305,7 @@ Returns aggregate statistics for the admin dashboard.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/DashBoard" \
+curl -X GET "https://bywayapi.runasp.net/api/DashBoard" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -1361,7 +1361,7 @@ Returns the top-rated or most popular courses for homepage display.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Home/top-courses"
+curl -X GET "https://bywayapi.runasp.net/api/Home/top-courses"
 ```
 
 **Success Response — 200 OK**
@@ -1400,7 +1400,7 @@ Returns the top categories for homepage display.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Home/top-Categories"
+curl -X GET "https://bywayapi.runasp.net/api/Home/top-Categories"
 ```
 
 **Success Response — 200 OK**
@@ -1432,7 +1432,7 @@ Returns the highlighted instructors for homepage display.
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Home/top-Instructor"
+curl -X GET "https://bywayapi.runasp.net/api/Home/top-Instructor"
 ```
 
 **Success Response — 200 OK**
@@ -1479,7 +1479,7 @@ Returns a list of courses similar to the given course, based on category or othe
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/GetSimilarCourses/a1b2c3d4-e5f6-7890-abcd-ef1234567890/similar"
+curl -X GET "https://bywayapi.runasp.net/api/GetSimilarCourses/a1b2c3d4-e5f6-7890-abcd-ef1234567890/similar"
 ```
 
 **Success Response — 200 OK**
@@ -1544,7 +1544,7 @@ Initiates checkout for the current user's cart and creates an order. Processes e
 **Example Request**
 
 ```bash
-curl -X POST "http://bywayapi.runasp.net/api/Order/checkout" \
+curl -X POST "https://bywayapi.runasp.net/api/Order/checkout" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -1579,7 +1579,7 @@ A callback/confirmation endpoint that indicates a payment was completed successf
 **Example Request**
 
 ```bash
-curl -X GET "http://bywayapi.runasp.net/api/Order/Success"
+curl -X GET "https://bywayapi.runasp.net/api/Order/Success"
 ```
 
 **Success Response — 200 OK**
@@ -1626,3 +1626,4 @@ POST   /api/Category            → Create category      [ADMIN]
 POST   /api/Course              → Create course        [ADMIN]
 GET    /api/DashBoard           → View stats           [ADMIN]
 ```
+

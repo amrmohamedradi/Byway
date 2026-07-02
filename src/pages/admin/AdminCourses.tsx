@@ -678,3 +678,4 @@ export const AdminCourses: React.FC = () => {
     </div>
   );
 };
+

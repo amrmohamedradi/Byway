@@ -71,3 +71,4 @@ export const MicrosoftIcon: React.FC<IconProps> = ({ size = 20, className = '', 
     <path d="M12 12h11v11H12z" fill="#ffb900"/>
   </svg>
 );
+

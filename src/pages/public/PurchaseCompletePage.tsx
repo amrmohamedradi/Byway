@@ -35,3 +35,4 @@ export const PurchaseCompletePage: React.FC = () => {
     </div>
   );
 };
+

@@ -7,9 +7,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://bywayapi.runasp.net',
+        target: 'https://bywayapi.runasp.net',
         changeOrigin: true,
       },
     },
   },
 })
+

@@ -128,3 +128,4 @@ export const CourseCard: React.FC<CourseCardProps> = ({
     </Link>
   );
 };
+

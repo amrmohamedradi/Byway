@@ -160,3 +160,4 @@ export const ShoppingCartPage: React.FC = () => {
     </div>
   );
 };
+

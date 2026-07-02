@@ -16,7 +16,7 @@ The `.env` file containing `VITE_API_BASE_URL` is not deployed with the applicat
 
    | Variable Name | Value | Notes |
    |---|---|---|
-   | `VITE_API_BASE_URL` | `https://your-backend-api.com` | Use your deployed backend API URL (e.g., `http://bywayapi.runasp.net` or `https://api.yourdomain.com`) |
+   | `VITE_API_BASE_URL` | `https://your-backend-api.com` | Use your deployed backend API URL (e.g., `https://bywayapi.runasp.net` or `https://api.yourdomain.com`) |
    | `VITE_API_URL` | `https://your-backend-api.com` | Same as above for redundancy |
 
 4. **Important**: Make sure these variables are set for the **Production** environment
@@ -45,13 +45,13 @@ After configuring the environment variables, redeploy your Vercel project:
 ### Local Development
 For local development, you can:
 1. Use the `.env` file with your local/development backend URL
-2. Or keep the default `http://bywayapi.runasp.net` and it will use that during development
+2. Or keep the default `https://bywayapi.runasp.net` and it will use that during development
 
 ### How the Configuration Works
 The application uses this priority order for the API base URL:
 1. `VITE_API_BASE_URL` environment variable (if set)
 2. `VITE_API_URL` environment variable (if set)
-3. Default fallback: `http://bywayapi.runasp.net`
+3. Default fallback: `https://bywayapi.runasp.net`
 
 ### Error Handling
 If the API URL is not properly configured, you will see:
@@ -88,3 +88,4 @@ The code has been updated to:
 4. **Use absolute backend URLs** instead of relative paths for all API requests
 
 This ensures that even if environment variables are not properly configured, the application will fail with a clear error message rather than silently routing requests to the wrong domain.
+

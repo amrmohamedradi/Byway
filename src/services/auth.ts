@@ -21,7 +21,7 @@ export interface AuthSession {
 
 type TokenPayload = Record<string, unknown>;
 
-const DEFAULT_API_BASE_URL = 'http://bywayapi.runasp.net';
+const DEFAULT_API_BASE_URL = 'https://bywayapi.runasp.net';
 
 const normalizeApiBaseUrl = (url: string | undefined): string => {
   if (!url || typeof url !== 'string' || url.trim().length === 0) {
@@ -228,3 +228,4 @@ export const registerRequest = ({ firstName, lastName, email, password }: Regist
 export const refreshRequest = (email: string, refreshToken: string) => (
   authRequest('/api/Auth/refresh', { email, refreshToken })
 );
+

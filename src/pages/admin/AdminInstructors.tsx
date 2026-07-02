@@ -402,3 +402,4 @@ export const AdminInstructors: React.FC = () => {
     </div>
   );
 };
+

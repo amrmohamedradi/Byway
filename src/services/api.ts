@@ -360,3 +360,4 @@ export const addCartItem = (courseId: string) => request<null>(`/api/Cart/${cour
 export const removeCartItem = (courseId: string) => request<null>(`/api/Cart/${courseId}`, { method: 'DELETE' });
 
 export const checkoutOrder = () => request<string>('/api/Order/checkout', { method: 'POST' });
+
