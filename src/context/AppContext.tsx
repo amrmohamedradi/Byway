@@ -7,7 +7,7 @@ import {
   saveRefreshToken,
   saveToken,
 } from '../services/auth';
-import type { LoginCredentials, RegisterPayload } from '../services/auth';
+import type { AuthSession, LoginCredentials, RegisterPayload } from '../services/auth';
 import * as api from '../services/api';
 import { AppContext } from './appContextValue';
 import type { Category, Course, Instructor, User } from './appTypes';
@@ -73,6 +73,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     saveRefreshToken(session.refreshToken);
     setUser(session.user);
     return session.user;
+  };
+
+  // Used by GoogleLoginButton and FacebookLoginButton after they call externalLoginRequest.
+  // Accepts the fully resolved AuthSession (JWT + refreshToken + user) and commits it to
+  // app state — identical result to a normal login from the rest of the app's perspective.
+  const loginWithSession = (session: AuthSession) => {
+    saveToken(session.token);
+    saveRefreshToken(session.refreshToken);
+    setUser(session.user);
   };
 
   const logout = () => {
@@ -206,6 +215,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       categories,
       cart,
       login,
+      loginWithSession,
       registerUser,
       logout,
       refreshCatalog,

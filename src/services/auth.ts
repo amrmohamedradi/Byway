@@ -221,6 +221,17 @@ export const getStoredSession = (): AuthSession | null => {
 
 export const loginRequest = (credentials: LoginCredentials) => authRequest('/api/Auth/login', credentials);
 
+// ─── External (Social) Login ──────────────────────────────────────────────────
+// For Google: idToken is the JWT ID token from Google Identity Services.
+// For Facebook: idToken is the short-lived access token from the Facebook JS SDK.
+// The token is passed directly to the backend in a single call and is NEVER stored
+// in localStorage, sessionStorage, or any persistent state. The backend re-validates
+// it against the provider's public keys / introspection endpoint independently.
+export type ExternalProvider = 'google' | 'facebook';
+
+export const externalLoginRequest = (provider: ExternalProvider, idToken: string) =>
+  authRequest('/api/auth/external-login', { provider, idToken });
+
 export const registerRequest = ({ firstName, lastName, email, password }: RegisterPayload) => (
   authRequest('/api/Auth/register', { firstName, lastName, email, password })
 );

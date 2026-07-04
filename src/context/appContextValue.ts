@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { LoginCredentials, RegisterPayload } from '../services/auth';
+import type { AuthSession, LoginCredentials, RegisterPayload } from '../services/auth';
 import type { Category, Course, Instructor, User } from './appTypes';
 
 export interface AppContextType {
@@ -9,6 +9,9 @@ export interface AppContextType {
   categories: Category[];
   cart: string[];
   login: (credentials: LoginCredentials) => Promise<User>;
+  // Called by social login buttons after obtaining + validating their provider token.
+  // Saves the JWT/refresh token and updates the user state, identical to a normal login.
+  loginWithSession: (session: AuthSession) => void;
   registerUser: (payload: RegisterPayload) => Promise<User>;
   logout: () => void;
   refreshCatalog: () => Promise<void>;
