@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/useApp';
 import { CourseCard } from '../../components/common/CourseCard';
 import { StarRating } from '../../components/common/StarRating';
 import { Compass, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const HeroScene3D = lazy(() => import('../../components/common/HeroScene3D'));
+
+const CanvasFallback: React.FC = () => (
+  <div className="w-full h-full min-h-[300px] sm:min-h-[450px] rounded-2xl bg-slate-100/50 animate-pulse flex flex-col items-center justify-center gap-3">
+    <div className="w-10 h-10 rounded-full border-4 border-slate-200 border-t-slate-800 animate-spin" />
+    <span className="text-xs font-semibold text-slate-400 font-sans">Loading interactive 3D universe...</span>
+  </div>
+);
 
 export const LandingPage: React.FC = () => {
   const { courses, instructors, categories, user } = useApp();
@@ -28,7 +38,12 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Text */}
-          <div className="lg:col-span-6 space-y-6 text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="lg:col-span-6 space-y-6 text-left"
+          >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-none">
               Unlock Your Potential <br/>with Byway
             </h1>
@@ -43,39 +58,23 @@ export const LandingPage: React.FC = () => {
                 Start your journey
               </Link>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Collage of Overlapping Student Circles */}
-          <div className="lg:col-span-6 flex justify-center relative h-[360px] sm:h-[450px]">
-            {/* Circle 1 - Graduate */}
-            <div className="absolute top-4 left-6 sm:left-12 w-44 h-44 sm:w-56 sm:h-56 rounded-full border-4 border-white shadow-xl overflow-hidden animate-pulse-slow">
-              <img 
-                src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=300&auto=format&fit=crop&q=80" 
-                alt="Graduate"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            
-            {/* Circle 2 - Student with bag */}
-            <div className="absolute right-6 top-12 w-48 h-48 sm:w-60 sm:h-60 rounded-full border-4 border-white shadow-2xl overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=350&auto=format&fit=crop&q=80" 
-                alt="Student Back"
-                className="w-full h-full object-cover"
-              />
+          {/* Right 3D Visual Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.0, delay: 0.2, ease: 'easeOut' }}
+            className="lg:col-span-6 flex justify-center relative h-[360px] sm:h-[450px] w-full"
+          >
+            <div className="w-full h-full relative rounded-2xl overflow-hidden bg-slate-50/50 border border-slate-100/80 shadow-inner flex items-center justify-center">
+              <Suspense fallback={<CanvasFallback />}>
+                <HeroScene3D />
+              </Suspense>
             </div>
 
-            {/* Circle 3 - Student holding book */}
-            <div className="absolute bottom-4 left-16 sm:left-24 w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-white shadow-lg overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=250&auto=format&fit=crop&q=80" 
-                alt="Student Front"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {/* Community badge tag */}
-            <div className="absolute bottom-16 right-4 sm:right-12 bg-white rounded-2xl shadow-xl p-3 max-w-[190px] border border-slate-100 flex flex-col items-center gap-1.5 animate-bounce-subtle">
+            {/* Community badge tag overlaid on 3D scene */}
+            <div className="absolute bottom-6 right-4 sm:right-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-3 max-w-[190px] border border-slate-100/50 flex flex-col items-center gap-1.5 z-10 hover:scale-105 transition-transform">
               <div className="flex -space-x-2">
                 <img className="w-7 h-7 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50" alt="" />
                 <img className="w-7 h-7 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50" alt="" />
@@ -85,7 +84,7 @@ export const LandingPage: React.FC = () => {
                 Learn from <strong className="text-blue-600 text-xs block">{instructors.length} Instructors</strong>
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
