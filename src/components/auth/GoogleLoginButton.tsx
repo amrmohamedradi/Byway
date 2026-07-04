@@ -22,8 +22,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
-import { GoogleIcon } from '../components/common/SocialIcons';
-import { useExternalLogin } from '../hooks/useExternalLogin';
+import { GoogleIcon } from '../common/SocialIcons';
+import { useExternalLogin } from '../../hooks/useExternalLogin';
 
 // ─── TypeScript ambient declaration for the GIS library ──────────────────────
 // The GIS library attaches `google` to `window`. We declare a minimal subset of
