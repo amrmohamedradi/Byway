@@ -115,9 +115,15 @@ const loadFacebookSdk = (appId: string): Promise<void> =>
   });
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export const FacebookLoginButton: React.FC = () => {
+interface FacebookLoginButtonProps {
+  /** 'login' (default) → "Facebook" label. 'signup' → "Sign up with Facebook" label. */
+  mode?: 'login' | 'signup';
+}
+
+export const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({ mode = 'login' }) => {
   const { isLoading, handleProviderToken } = useExternalLogin();
   const sdkReadyRef = useRef(false);
+  const label = mode === 'signup' ? 'Sign up with Facebook' : 'Facebook';
 
   // ─── Read App ID from env ───────────────────────────────────────────────────
   // If you are NOT using Vite, replace `import.meta.env.VITE_FACEBOOK_APP_ID`
@@ -178,11 +184,11 @@ export const FacebookLoginButton: React.FC = () => {
 
   return (
     <button
-      id="facebook-login-btn"
+      id={mode === 'signup' ? 'facebook-signup-btn' : 'facebook-login-btn'}
       type="button"
       onClick={handleClick}
       disabled={isLoading}
-      aria-label="Sign in with Facebook"
+      aria-label={mode === 'signup' ? 'Sign up with Facebook' : 'Sign in with Facebook'}
       className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {isLoading ? (
@@ -211,7 +217,7 @@ export const FacebookLoginButton: React.FC = () => {
       ) : (
         <FacebookIcon className="w-4 h-4 text-blue-600 fill-blue-600" />
       )}
-      <span className="hidden sm:inline">{isLoading ? 'Signing in…' : 'Facebook'}</span>
+      <span className="hidden sm:inline">{isLoading ? 'Signing in…' : label}</span>
     </button>
   );
 };

@@ -94,9 +94,15 @@ const loadGsiScript = (): Promise<void> =>
   });
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export const GoogleLoginButton: React.FC = () => {
+interface GoogleLoginButtonProps {
+  /** 'login' (default) → "Google" label. 'signup' → "Sign up with Google" label. */
+  mode?: 'login' | 'signup';
+}
+
+export const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ mode = 'login' }) => {
   const { isLoading, handleProviderToken } = useExternalLogin();
   const initializedRef = useRef(false);
+  const label = mode === 'signup' ? 'Sign up with Google' : 'Google';
 
   // ─── Read client ID from env ────────────────────────────────────────────────
   // If you are NOT using Vite, replace `import.meta.env.VITE_GOOGLE_CLIENT_ID`
@@ -192,11 +198,11 @@ export const GoogleLoginButton: React.FC = () => {
 
   return (
     <button
-      id="google-login-btn"
+      id={mode === 'signup' ? 'google-signup-btn' : 'google-login-btn'}
       type="button"
       onClick={handleClick}
       disabled={isLoading}
-      aria-label="Sign in with Google"
+      aria-label={mode === 'signup' ? 'Sign up with Google' : 'Sign in with Google'}
       className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {isLoading ? (
@@ -225,7 +231,7 @@ export const GoogleLoginButton: React.FC = () => {
       ) : (
         <GoogleIcon className="w-4 h-4" />
       )}
-      <span className="hidden sm:inline">{isLoading ? 'Signing in…' : 'Google'}</span>
+      <span className="hidden sm:inline">{isLoading ? 'Signing in…' : label}</span>
     </button>
   );
 };

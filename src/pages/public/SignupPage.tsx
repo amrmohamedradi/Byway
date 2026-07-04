@@ -5,7 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useApp } from '../../context/useApp';
 import { ArrowRight } from 'lucide-react';
-import { FacebookIcon } from '../../components/common/SocialIcons';
+import { GoogleLoginButton } from '../../components/auth/GoogleLoginButton';
+import { FacebookLoginButton } from '../../components/auth/FacebookLoginButton';
+import { MicrosoftIcon } from '../../components/common/SocialIcons';
 
 const signupSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -240,30 +242,19 @@ export const SignupPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-3 gap-3">
-              {/* Facebook */}
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors"
-              >
-                <FacebookIcon className="w-4 h-4 text-blue-600" />
-                <span className="hidden sm:inline">Facebook</span>
-              </button>
+              {/* Facebook — same component as Login page, mode='signup' changes the label */}
+              <FacebookLoginButton mode="signup" />
 
-              {/* Google */}
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors"
-              >
-                <span className="font-bold text-sm text-red-500">G</span>
-                <span className="hidden sm:inline">Google</span>
-              </button>
+              {/* Google — same component as Login page, mode='signup' changes the label */}
+              <GoogleLoginButton mode="signup" />
 
-              {/* Microsoft */}
+              {/* Microsoft — placeholder (no backend endpoint yet) */}
               <button
                 type="button"
+                aria-label="Sign up with Microsoft"
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors"
               >
-                <span className="font-semibold text-xs text-blue-500">■</span>
+                <MicrosoftIcon className="w-4 h-4" />
                 <span className="hidden sm:inline">Microsoft</span>
               </button>
             </div>
