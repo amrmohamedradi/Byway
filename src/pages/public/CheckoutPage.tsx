@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Percent } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const checkoutSchema = z.object({
   country: z.string().min(1, 'Country is required'),
@@ -22,14 +23,38 @@ export const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal'>('card');
   const [couponCode, setCouponCode] = useState('');
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [couponSuccess, setCouponSuccess] = useState<string | null>(null);
 
   const cartItems = courses.filter(course => cart.includes(course.id));
 
   // Calculations
   const subtotal = cartItems.reduce((sum, item) => sum + item.cost, 0);
-  const discount = 0.00;
-  const tax = subtotal * 0.15;
+  const discount = subtotal * discountPercent;
+  const tax = (subtotal - discount) * 0.15;
   const total = subtotal - discount + tax;
+
+  const handleApplyCoupon = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setCouponError(null);
+    setCouponSuccess(null);
+
+    const trimmed = couponCode.trim().toUpperCase();
+    if (!trimmed) {
+      setCouponError('Please enter a coupon code.');
+      return;
+    }
+
+    if (trimmed === 'WELCOME10' || trimmed === 'BYWAY10') {
+      setDiscountPercent(0.10);
+      setCouponSuccess('10% discount coupon applied successfully!');
+      toast.success('10% discount applied!');
+    } else {
+      setCouponError('Invalid coupon code. Try WELCOME10.');
+      setDiscountPercent(0);
+    }
+  };
 
   const {
     register,
@@ -180,7 +205,7 @@ export const CheckoutPage: React.FC = () => {
                         <label className="block text-sm font-semibold text-slate-800">Expiry Date</label>
                         <input
                           type="text"
-                          placeholder="Enter Country"
+                          placeholder="MM/YY"
                           {...register('expiryDate')}
                           className={`block w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
                             errors.expiryDate ? 'border-red-300 focus:ring-red-100' : 'border-slate-300 focus:ring-blue-100'
@@ -192,7 +217,7 @@ export const CheckoutPage: React.FC = () => {
                         <label className="block text-sm font-semibold text-slate-800">CVC/CVV</label>
                         <input
                           type="text"
-                          placeholder="Enter Country"
+                          placeholder="CVV"
                           {...register('cvv')}
                           className={`block w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
                             errors.cvv ? 'border-red-300 focus:ring-red-100' : 'border-slate-300 focus:ring-blue-100'
@@ -251,17 +276,29 @@ export const CheckoutPage: React.FC = () => {
               </div>
 
               {/* Promo code input */}
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Percent className="h-4 w-4 text-slate-400" />
+              <div className="space-y-1.5">
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Percent className="h-4 w-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="APPLY COUPON CODE"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      className="block w-full pl-9 pr-3 py-2.5 border border-dashed border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 text-xs font-bold text-slate-600"
+                    />
+                  </div>
+                  <button
+                    onClick={handleApplyCoupon}
+                    className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition-colors"
+                  >
+                    Apply
+                  </button>
                 </div>
-                <input
-                  type="text"
-                  placeholder="APPLY COUPON CODE"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  className="block w-full pl-9 pr-3 py-2.5 border border-dashed border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-xs font-bold text-slate-600"
-                />
+                {couponError && <p className="text-[10px] text-red-500 font-semibold">{couponError}</p>}
+                {couponSuccess && <p className="text-[10px] text-green-600 font-semibold">{couponSuccess}</p>}
               </div>
 
               {/* Price Details */}

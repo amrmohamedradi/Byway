@@ -26,6 +26,10 @@ export const CoursesPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<string>('latest');
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
   // Read search & category parameters from URL query string
   useEffect(() => {
     const catQuery = searchParams.get('category');
@@ -35,6 +39,11 @@ export const CoursesPage: React.FC = () => {
       setSelectedCategories([]);
     }
   }, [searchParams]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedRating, selectedCategories, maxPrice, selectedLectureRange, sortBy, searchParams]);
 
   const categoriesList = categories.length > 0
     ? categories.map((category) => category.name)
@@ -92,6 +101,13 @@ export const CoursesPage: React.FC = () => {
       return 0;
     });
   }, [courses, searchParams, selectedRating, selectedCategories, maxPrice, selectedLectureRange, sortBy]);
+
+  const paginatedCourses = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredCourses.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredCourses, currentPage]);
+
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-left font-sans">
@@ -330,9 +346,9 @@ export const CoursesPage: React.FC = () => {
 
         {/* Course Cards Grid */}
         <div className="flex-1 space-y-8 w-full">
-          {filteredCourses.length > 0 ? (
+          {paginatedCourses.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCourses.map((course) => (
+              {paginatedCourses.map((course) => (
                 <CourseCard key={course.id} course={course} />
               ))}
             </div>
@@ -353,13 +369,35 @@ export const CoursesPage: React.FC = () => {
             </div>
           )}
 
-          {filteredCourses.length > 0 && (
+          {totalPages > 1 && (
             <div className="flex justify-center items-center gap-2 pt-6">
-              <button className="w-9 h-9 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400">&lt;</button>
-              <button className="w-9 h-9 border border-slate-900 bg-slate-900 text-white rounded flex items-center justify-center font-bold text-sm">1</button>
-              <button className="w-9 h-9 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-600 text-sm">2</button>
-              <button className="w-9 h-9 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-600 text-sm">3</button>
-              <button className="w-9 h-9 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400">&gt;</button>
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+                className="w-9 h-9 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+              >
+                &lt;
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`w-9 h-9 border rounded flex items-center justify-center font-bold text-sm transition-all ${
+                    currentPage === page
+                      ? 'border-slate-900 bg-slate-900 text-white'
+                      : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(currentPage + 1)}
+                className="w-9 h-9 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+              >
+                &gt;
+              </button>
             </div>
           )}
         </div>

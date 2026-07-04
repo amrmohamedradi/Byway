@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import type { Instructor } from '../../context/appTypes';
 import { useApp } from '../../context/useApp';
 import { StarRating } from '../../components/common/StarRating';
@@ -29,12 +29,28 @@ export const AdminInstructors: React.FC = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [instToDelete, setInstToDelete] = useState<Instructor | null>(null);
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  // Reset page when search query changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
   const filteredInstructors = useMemo(() => {
     return instructors.filter((i) =>
       i.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       i.jobTitle.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [instructors, searchQuery]);
+
+  const paginatedInstructors = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredInstructors.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredInstructors, currentPage]);
+
+  const totalPages = Math.ceil(filteredInstructors.length / itemsPerPage);
 
   // Form setup
   const {
@@ -167,8 +183,8 @@ export const AdminInstructors: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 text-xs font-medium text-slate-700">
-              {filteredInstructors.length > 0 ? (
-                filteredInstructors.map((inst) => (
+              {paginatedInstructors.length > 0 ? (
+                paginatedInstructors.map((inst) => (
                   <tr key={inst.id} className="hover:bg-slate-50/50 transition-colors">
                     {/* Name column */}
                     <td className="px-6 py-4 flex items-center gap-3">
@@ -230,13 +246,37 @@ export const AdminInstructors: React.FC = () => {
         </div>
 
         {/* Pagination bar */}
-        <div className="flex justify-center items-center gap-2 pt-6">
-          <button className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400">&lt;</button>
-          <button className="w-8 h-8 border border-slate-900 bg-slate-900 text-white rounded flex items-center justify-center font-bold text-xs">1</button>
-          <button className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-600 text-xs">2</button>
-          <button className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-600 text-xs">3</button>
-          <button className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400">&gt;</button>
-        </div>
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 pt-6">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+              className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+            >
+              &lt;
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`w-8 h-8 border rounded flex items-center justify-center font-bold text-xs transition-all ${
+                  currentPage === page
+                    ? 'border-slate-900 bg-slate-900 text-white'
+                    : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+              className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+            >
+              &gt;
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Reusable Delete Dialog */}
@@ -291,7 +331,7 @@ export const AdminInstructors: React.FC = () => {
               // View modal detail layout
               <div className="space-y-4 text-slate-600 text-sm">
                 <div>
-                  <strong className="block text-slate-800 text-xs font-bold uppercase tracking-wider mb-1">Nama</strong>
+                  <strong className="block text-slate-800 text-xs font-bold uppercase tracking-wider mb-1">Name</strong>
                   <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg">{selectedInst?.name}</div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -320,7 +360,7 @@ export const AdminInstructors: React.FC = () => {
                 
                 {/* Name */}
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-semibold text-slate-800">Nama</label>
+                  <label className="block text-sm font-semibold text-slate-800">Name</label>
                   <input
                     type="text"
                     placeholder="Write here"

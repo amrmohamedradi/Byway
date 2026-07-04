@@ -102,7 +102,7 @@ export const AdminLayout: React.FC = () => {
             className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-slate-600 rounded-md hover:bg-red-50 hover:text-red-600 transition-all"
           >
             <LogOut className="w-5 h-5 text-slate-400 group-hover:text-red-500" />
-            logout
+            Logout
           </button>
         </div>
       </aside>

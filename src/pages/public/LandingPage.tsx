@@ -38,7 +38,7 @@ export const LandingPage: React.FC = () => {
             <div>
               <Link
                 to="/courses"
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-semibold rounded-md text-white bg-slate-950 hover:bg-slate-800 shadow-lg shadow-slate-200 transition-all hover:-translate-y-0.5"
               >
                 Start your journey
               </Link>
@@ -91,7 +91,7 @@ export const LandingPage: React.FC = () => {
 
       {/* 2. Stats Bar */}
       <section className="bg-slate-100/50 py-10 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x divide-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x-0 md:divide-x md:divide-slate-200">
           {stats.map((stat, idx) => (
             <div key={idx} className="space-y-1">
               <h3 className="text-3xl font-extrabold text-slate-800 tracking-tight">{stat.value}</h3>

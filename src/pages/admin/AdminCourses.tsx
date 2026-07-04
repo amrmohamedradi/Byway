@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import type { Course } from '../../context/appTypes';
 import { useApp } from '../../context/useApp';
 import { CourseCard } from '../../components/common/CourseCard';
@@ -51,6 +51,15 @@ export const AdminCourses: React.FC = () => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<Course | null>(null);
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  // Reset page when search or category filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCatFilter]);
+
   // Filtering
   const filteredCourses = useMemo(() => {
     return courses.filter((c) => {
@@ -59,6 +68,13 @@ export const AdminCourses: React.FC = () => {
       return matchSearch && matchCat;
     });
   }, [courses, searchQuery, selectedCatFilter]);
+
+  const paginatedCourses = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredCourses.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredCourses, currentPage]);
+
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
 
   // Form hooks
   const {
@@ -251,9 +267,9 @@ export const AdminCourses: React.FC = () => {
         </div>
 
         {/* Grid of Courses */}
-        {filteredCourses.length > 0 ? (
+        {paginatedCourses.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCourses.map((c) => (
+            {paginatedCourses.map((c) => (
               <CourseCard
                 key={c.id}
                 course={c}
@@ -271,13 +287,37 @@ export const AdminCourses: React.FC = () => {
         )}
 
         {/* Pagination */}
-        <div className="flex justify-center items-center gap-2 pt-6">
-          <button className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400">&lt;</button>
-          <button className="w-8 h-8 border border-slate-900 bg-slate-900 text-white rounded flex items-center justify-center font-bold text-xs">1</button>
-          <button className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-600 text-xs">2</button>
-          <button className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-600 text-xs">3</button>
-          <button className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400">&gt;</button>
-        </div>
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 pt-6">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+              className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+            >
+              &lt;
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`w-8 h-8 border rounded flex items-center justify-center font-bold text-xs transition-all ${
+                  currentPage === page
+                    ? 'border-slate-900 bg-slate-900 text-white'
+                    : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+              className="w-8 h-8 border border-slate-200 rounded flex items-center justify-center hover:bg-slate-50 text-slate-400 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+            >
+              &gt;
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Delete confirmation popup */}
@@ -357,7 +397,7 @@ export const AdminCourses: React.FC = () => {
                 <div className="space-y-4">
                   {/* Title */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Course Nama</label>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Course Name</label>
                     <input
                       type="text"
                       placeholder="Write here"

@@ -151,7 +151,7 @@ export const ShoppingCartPage: React.FC = () => {
           </p>
           <Link 
             to="/courses"
-            className="mt-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow transition-colors"
+            className="mt-2 px-5 py-2.5 bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs rounded-lg shadow transition-colors"
           >
             Explore Courses
           </Link>

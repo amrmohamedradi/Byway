@@ -1,9 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Check } from 'lucide-react';
 
 export const PurchaseCompletePage: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const orderId = searchParams.get('orderId');
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center py-20 px-4 min-h-[calc(100vh-20rem)] bg-white font-sans text-center">
@@ -18,8 +20,13 @@ export const PurchaseCompletePage: React.FC = () => {
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           Purchase Complete
         </h1>
+        {orderId && (
+          <p className="text-sm font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 inline-block font-mono">
+            Order ID: #{orderId}
+          </p>
+        )}
         <p className="text-slate-500 text-base sm:text-lg font-medium leading-relaxed">
-          You Will Receive a confirmation email soon!
+          You will receive a confirmation email soon.
         </p>
       </div>
 
