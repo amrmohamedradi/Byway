@@ -29,7 +29,7 @@ export const CheckoutPage: React.FC = () => {
 
   const cartItems = courses.filter(course => cart.includes(course.id));
 
-  // Calculations
+
   const subtotal = cartItems.reduce((sum, item) => sum + item.cost, 0);
   const discount = subtotal * discountPercent;
   const tax = (subtotal - discount) * 0.15;
@@ -91,8 +91,8 @@ export const CheckoutPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-left font-sans">
-      
-      {/* Breadcrumb banner */}
+
+
       <div className="text-xs font-semibold text-slate-400 flex gap-2 items-center mb-6">
         <Link to="/courses" className="hover:text-slate-600">Details</Link>
         <span>&gt;</span>
@@ -105,18 +105,18 @@ export const CheckoutPage: React.FC = () => {
 
       {cartItems.length > 0 ? (
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Form: Shipping and Billing Details */}
+
+
           <div className="lg:col-span-8 space-y-6">
-            
-            {/* Country and State Section */}
+
+
             <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-5 shadow-sm">
               <div className="flex justify-between items-center">
                 <h2 className="text-base font-bold text-slate-800">Billing Information</h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Country */}
+
                 <div className="space-y-1.5">
                   <label className="block text-sm font-semibold text-slate-800">Country</label>
                   <input
@@ -130,7 +130,7 @@ export const CheckoutPage: React.FC = () => {
                   {errors.country && <p className="text-[10px] text-red-500 font-semibold">{errors.country.message}</p>}
                 </div>
 
-                {/* State */}
+
                 <div className="space-y-1.5">
                   <label className="block text-sm font-semibold text-slate-800">State/Union Territory</label>
                   <input
@@ -146,11 +146,11 @@ export const CheckoutPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Payment Method Section */}
+
             <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
               <h2 className="text-base font-bold text-slate-800">Payment Method</h2>
-              
-              {/* Option 1: Credit/Debit Card */}
+
+
               <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <div className="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
                   <label className="flex items-center gap-3 cursor-pointer text-sm font-bold text-slate-800">
@@ -171,7 +171,7 @@ export const CheckoutPage: React.FC = () => {
 
                 {paymentMethod === 'card' && (
                   <div className="p-6 space-y-4">
-                    {/* Name on Card */}
+
                     <div className="space-y-1.5">
                       <label className="block text-sm font-semibold text-slate-800">Name of Card</label>
                       <input
@@ -185,7 +185,7 @@ export const CheckoutPage: React.FC = () => {
                       {errors.cardName && <p className="text-[10px] text-red-500 font-semibold">{errors.cardName.message}</p>}
                     </div>
 
-                    {/* Card Number */}
+
                     <div className="space-y-1.5">
                       <label className="block text-sm font-semibold text-slate-800">Card Number</label>
                       <input
@@ -199,7 +199,7 @@ export const CheckoutPage: React.FC = () => {
                       {errors.cardNumber && <p className="text-[10px] text-red-500 font-semibold">{errors.cardNumber.message}</p>}
                     </div>
 
-                    {/* Expiry and CVV (Matches visual placeholders "Enter Country" exactly!) */}
+
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <label className="block text-sm font-semibold text-slate-800">Expiry Date</label>
@@ -230,7 +230,7 @@ export const CheckoutPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Option 2: PayPal */}
+
               <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <div className="p-4 bg-slate-50 flex justify-between items-center">
                   <label className="flex items-center gap-3 cursor-pointer text-sm font-bold text-slate-800">
@@ -255,17 +255,17 @@ export const CheckoutPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Summary Column */}
+
           <div className="lg:col-span-4 sticky top-24 space-y-6">
             <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-lg space-y-6">
-              
-              {/* Summary Items list */}
+
+
               <div>
                 <h3 className="text-base font-bold text-slate-800 mb-3">Order Details ({cartItems.length})</h3>
                 <div className="space-y-2">
                   {cartItems.map((item) => (
-                    <div 
-                      key={item.id} 
+                    <div
+                      key={item.id}
                       className="p-3 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-600"
                     >
                       <span className="truncate max-w-[200px]">{item.title}</span>
@@ -275,7 +275,7 @@ export const CheckoutPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Promo code input */}
+
               <div className="space-y-1.5">
                 <div className="flex gap-2">
                   <div className="relative flex-1">
@@ -301,7 +301,7 @@ export const CheckoutPage: React.FC = () => {
                 {couponSuccess && <p className="text-[10px] text-green-600 font-semibold">{couponSuccess}</p>}
               </div>
 
-              {/* Price Details */}
+
               <div className="space-y-3.5 text-sm font-semibold text-slate-600 border-t border-slate-100 pt-4">
                 <div className="flex items-center justify-between">
                   <span>Price</span>
@@ -315,14 +315,14 @@ export const CheckoutPage: React.FC = () => {
                   <span>Tax</span>
                   <span className="text-slate-900">{formatVal(tax)}</span>
                 </div>
-                
+
                 <div className="border-t border-slate-100 pt-4 flex items-center justify-between text-base font-extrabold text-slate-900">
                   <span>Total</span>
                   <span className="text-lg">{formatVal(total)}</span>
                 </div>
               </div>
 
-              {/* Pay Now Button */}
+
               <button
                 type="submit"
                 disabled={isSubmitting || (paymentMethod === 'card' && Object.keys(errors).length > 0)}

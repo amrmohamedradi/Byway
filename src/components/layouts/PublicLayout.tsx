@@ -26,11 +26,11 @@ export const PublicLayout: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      {/* Navigation Header */}
+
       <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          
-          {/* Logo */}
+
+
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-green-500 to-blue-500 flex items-center justify-center">
               <span className="text-white font-bold text-lg font-mono">B</span>
@@ -38,7 +38,7 @@ export const PublicLayout: React.FC = () => {
             <span className="font-extrabold text-2xl tracking-tight text-slate-800 font-sans">Byway</span>
           </Link>
 
-          {/* Search bar */}
+
           <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md relative hidden md:block">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-slate-400" />
@@ -52,10 +52,10 @@ export const PublicLayout: React.FC = () => {
             />
           </form>
 
-          {/* Action Links & User status */}
+
           <div className="flex items-center gap-4">
-            <Link 
-              to="/courses" 
+            <Link
+              to="/courses"
               className={`text-sm font-medium hover:text-blue-600 transition-colors ${
                 location.pathname.startsWith('/courses') ? 'text-blue-600' : 'text-slate-600'
               }`}
@@ -64,9 +64,9 @@ export const PublicLayout: React.FC = () => {
             </Link>
 
             {user ? (
-              // Logged in Navbar details
+
               <div className="flex items-center gap-4">
-                {/* Cart link */}
+
                 <Link to="/cart" className="relative p-2 text-slate-600 hover:text-blue-600 transition-colors">
                   <ShoppingCart className="h-6 w-6" />
                   {cart.length > 0 && (
@@ -76,24 +76,24 @@ export const PublicLayout: React.FC = () => {
                   )}
                 </Link>
 
-                {/* Dashboard / Quick switch link */}
+
                 {user.role === 'admin' && (
                   <Link to="/admin/dashboard" className="text-xs bg-violet-100 hover:bg-violet-200 text-violet-700 font-semibold px-2.5 py-1.5 rounded transition-all">
                     Admin Dash
                   </Link>
                 )}
 
-                {/* Sign out */}
-                <button 
-                  onClick={() => setLogoutDialogOpen(true)} 
-                  title="Logout" 
+
+                <button
+                  onClick={() => setLogoutDialogOpen(true)}
+                  title="Logout"
                   className="p-2 text-slate-500 hover:text-red-600 transition-colors"
                 >
                   <LogOut className="h-5 w-5" />
                 </button>
 
-                {/* User Avatar Circle */}
-                <div 
+
+                <div
                   className="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold cursor-pointer select-none"
                   onClick={() => user.role === 'admin' ? navigate('/admin/dashboard') : navigate('/courses')}
                 >
@@ -101,16 +101,16 @@ export const PublicLayout: React.FC = () => {
                 </div>
               </div>
             ) : (
-              // Logged out buttons
+
               <div className="flex items-center gap-2">
-                <Link 
-                  to="/login" 
+                <Link
+                  to="/login"
                   className="px-4 py-2 border border-slate-300 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   Log In
                 </Link>
-                <Link 
-                  to="/signup" 
+                <Link
+                  to="/signup"
                   className="px-4 py-2 bg-slate-900 border border-transparent rounded-md text-sm font-medium text-white hover:bg-slate-800 transition-colors"
                 >
                   Sign Up
@@ -121,16 +121,16 @@ export const PublicLayout: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content Area */}
+
       <main className="flex-1">
         <Outlet />
       </main>
 
-      {/* Footer */}
+
       <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          
-          {/* Logo & Description */}
+
+
           <div className="flex flex-col gap-4">
             <Link to="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-green-500 to-blue-500 flex items-center justify-center">
@@ -143,7 +143,7 @@ export const PublicLayout: React.FC = () => {
             </p>
           </div>
 
-          {/* Column 2: Get Help */}
+
           <div>
             <h3 className="text-white font-semibold text-base mb-4">Get Help</h3>
             <ul className="space-y-2 text-sm text-slate-400">
@@ -153,7 +153,7 @@ export const PublicLayout: React.FC = () => {
             </ul>
           </div>
 
-          {/* Column 3: Programs */}
+
           <div>
             <h3 className="text-white font-semibold text-base mb-4">Programs</h3>
             <ul className="space-y-2 text-sm text-slate-400">
@@ -167,7 +167,7 @@ export const PublicLayout: React.FC = () => {
             </ul>
           </div>
 
-          {/* Column 4: Contact Us */}
+
           <div className="flex flex-col gap-4">
             <h3 className="text-white font-semibold text-base mb-1">Contact Us</h3>
             <p className="text-sm text-slate-400">
@@ -179,8 +179,8 @@ export const PublicLayout: React.FC = () => {
             <p className="text-sm text-slate-400">
               <strong>Mail:</strong> bywayedu@webkul.in
             </p>
-            
-            {/* Social Icons */}
+
+
             <div className="flex items-center gap-3 mt-2">
               <a href="#" className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-white transition-colors">
                 <FacebookIcon size={16} />
@@ -202,7 +202,7 @@ export const PublicLayout: React.FC = () => {
         </div>
       </footer>
 
-      {/* Logout confirmation dialog */}
+
       <ConfirmDialog
         isOpen={logoutDialogOpen}
         onClose={() => setLogoutDialogOpen(false)}

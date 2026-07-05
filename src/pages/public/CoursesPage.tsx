@@ -10,28 +10,28 @@ export const CoursesPage: React.FC = () => {
   const { courses, categories } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Collapsible Filters Sidebar states
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [ratingsExpanded, setRatingsExpanded] = useState(true);
   const [lecturesExpanded, setLecturesExpanded] = useState(true);
   const [priceExpanded, setPriceExpanded] = useState(true);
   const [categoryExpanded, setCategoryExpanded] = useState(true);
 
-  // Filters State
+
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
-  const [selectedLectureRange, setSelectedLectureRange] = useState<string>(''); // '', '1-15', '16-30', '31-45', '46+'
+  const [selectedLectureRange, setSelectedLectureRange] = useState<string>('');
   const [maxPrice, setMaxPrice] = useState<number>(980);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  
-  // Sort State: 'latest' | 'oldest' | 'price-high' | 'price-low'
+
+
   const [sortBy, setSortBy] = useState<string>('latest');
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
 
-  // Pagination State
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  // Read search & category parameters from URL query string
+
   useEffect(() => {
     const catQuery = searchParams.get('category');
     if (catQuery) {
@@ -41,7 +41,7 @@ export const CoursesPage: React.FC = () => {
     }
   }, [searchParams]);
 
-  // Reset page when filters change
+
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedRating, selectedCategories, maxPrice, selectedLectureRange, sortBy, searchParams]);
@@ -58,32 +58,32 @@ export const CoursesPage: React.FC = () => {
     }
   };
 
-  // Filter & Sort Logic
+
   const filteredCourses = useMemo(() => {
     const searchVal = searchParams.get('search')?.toLowerCase() || '';
 
     return courses.filter((course) => {
-      // 1. Search Query filter
+
       if (searchVal && !course.title.toLowerCase().includes(searchVal) && !course.category.toLowerCase().includes(searchVal)) {
         return false;
       }
-      
-      // 2. Rating filter
+
+
       if (selectedRating !== null && Math.floor(course.rate) < selectedRating) {
         return false;
       }
 
-      // 3. Category filter
+
       if (selectedCategories.length > 0 && !selectedCategories.includes(course.category)) {
         return false;
       }
 
-      // 4. Price filter
+
       if (course.cost > maxPrice) {
         return false;
       }
 
-      // 5. Lectures Range filter
+
       if (selectedLectureRange) {
         const count = course.lectures;
         if (selectedLectureRange === '1-15' && (count < 1 || count > 15)) return false;
@@ -94,8 +94,8 @@ export const CoursesPage: React.FC = () => {
 
       return true;
     }).sort((a, b) => {
-      // Sort logic
-      if (sortBy === 'latest') return b.id.localeCompare(a.id); // Simple ID comparison
+
+      if (sortBy === 'latest') return b.id.localeCompare(a.id);
       if (sortBy === 'oldest') return a.id.localeCompare(b.id);
       if (sortBy === 'price-high') return b.cost - a.cost;
       if (sortBy === 'price-low') return a.cost - b.cost;
@@ -113,21 +113,21 @@ export const CoursesPage: React.FC = () => {
   return (
     courses.length === 0 ? <PageLoader message="Loading courses..." /> :
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-left font-sans">
-      
-      {/* Title Header */}
+
+
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Design Courses</h1>
         <p className="text-slate-400 text-sm font-semibold mt-1">All Development Courses</p>
       </div>
 
-      {/* Control Bar */}
+
       <div className="border-b border-slate-200 pb-4 mb-6 flex items-center justify-between gap-4">
-        {/* Toggle Filters Sidebar Button */}
+
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className={`flex items-center gap-2 px-4 py-2 border rounded-md text-sm font-medium transition-colors ${
-            sidebarOpen 
-              ? 'bg-slate-900 border-slate-900 text-white' 
+            sidebarOpen
+              ? 'bg-slate-900 border-slate-900 text-white'
               : 'border-slate-300 text-slate-700 bg-white hover:bg-slate-50'
           }`}
         >
@@ -135,7 +135,7 @@ export const CoursesPage: React.FC = () => {
           Filter
         </button>
 
-        {/* Sort Dropdown */}
+
         <div className="relative">
           <div className="flex items-center gap-2">
             <span className="text-xs text-slate-400 font-semibold uppercase">Sort By</span>
@@ -153,7 +153,7 @@ export const CoursesPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Dropdown Items (matches Component 1.png style!) */}
+
           {sortDropdownOpen && (
             <div className="absolute right-0 mt-1 w-44 rounded-lg bg-white border border-slate-200 shadow-lg z-20 py-1 font-medium text-slate-700 text-sm">
               {[
@@ -180,14 +180,14 @@ export const CoursesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid: Sidebar + Courses Grid */}
+
       <div className="flex flex-col lg:flex-row gap-8 items-start">
-        
-        {/* Sidebar Filters */}
+
+
         {sidebarOpen && (
           <aside className="w-full lg:w-64 flex-shrink-0 space-y-6 bg-white p-4 rounded-xl border border-slate-200">
-            
-            {/* Filter Section: Rating */}
+
+
             <div className="border-b border-slate-100 pb-4">
               <button
                 onClick={() => setRatingsExpanded(!ratingsExpanded)}
@@ -196,12 +196,12 @@ export const CoursesPage: React.FC = () => {
                 <span>Rating</span>
                 {ratingsExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
-              
+
               {ratingsExpanded && (
                 <div className="mt-3 space-y-2">
                   {[5, 4, 3].map((stars) => (
-                    <label 
-                      key={stars} 
+                    <label
+                      key={stars}
                       className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-600 hover:text-slate-800"
                     >
                       <input
@@ -210,7 +210,7 @@ export const CoursesPage: React.FC = () => {
                         checked={selectedRating === stars}
                         onChange={() => setSelectedRating(selectedRating === stars ? null : stars)}
                         onClick={(e) => {
-                          // Allow deselecting the radio
+
                           const target = e.target as HTMLInputElement;
                           if (selectedRating === stars) {
                             setSelectedRating(null);
@@ -227,7 +227,7 @@ export const CoursesPage: React.FC = () => {
               )}
             </div>
 
-            {/* Filter Section: Number of Lectures */}
+
             <div className="border-b border-slate-100 pb-4">
               <button
                 onClick={() => setLecturesExpanded(!lecturesExpanded)}
@@ -236,7 +236,7 @@ export const CoursesPage: React.FC = () => {
                 <span>Number of Lectures</span>
                 {lecturesExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
-              
+
               {lecturesExpanded && (
                 <div className="mt-3 space-y-2.5">
                   {[
@@ -245,8 +245,8 @@ export const CoursesPage: React.FC = () => {
                     { label: '31-45', value: '31-45' },
                     { label: 'More than 45', value: '46+' },
                   ].map((range) => (
-                    <label 
-                      key={range.value} 
+                    <label
+                      key={range.value}
                       className="flex items-center gap-2.5 cursor-pointer text-xs font-semibold text-slate-600"
                     >
                       <input
@@ -260,7 +260,7 @@ export const CoursesPage: React.FC = () => {
                     </label>
                   ))}
                   {selectedLectureRange && (
-                    <button 
+                    <button
                       onClick={() => setSelectedLectureRange('')}
                       className="text-[10px] text-red-500 hover:underline font-bold mt-1 block"
                     >
@@ -271,7 +271,7 @@ export const CoursesPage: React.FC = () => {
               )}
             </div>
 
-            {/* Filter Section: Price */}
+
             <div className="border-b border-slate-100 pb-4">
               <button
                 onClick={() => setPriceExpanded(!priceExpanded)}
@@ -280,7 +280,7 @@ export const CoursesPage: React.FC = () => {
                 <span>Price</span>
                 {priceExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
-              
+
               {priceExpanded && (
                 <div className="mt-4 px-2 space-y-2">
                   <input
@@ -300,7 +300,7 @@ export const CoursesPage: React.FC = () => {
               )}
             </div>
 
-            {/* Filter Section: Category */}
+
             <div>
               <button
                 onClick={() => setCategoryExpanded(!categoryExpanded)}
@@ -309,12 +309,12 @@ export const CoursesPage: React.FC = () => {
                 <span>Category</span>
                 {categoryExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
-              
+
               {categoryExpanded && (
                 <div className="mt-3 space-y-2.5">
                   {categoriesList.map((cat) => (
-                    <label 
-                      key={cat} 
+                    <label
+                      key={cat}
                       className="flex items-center gap-2.5 cursor-pointer text-xs font-semibold text-slate-600"
                     >
                       <input
@@ -329,8 +329,8 @@ export const CoursesPage: React.FC = () => {
                 </div>
               )}
             </div>
-            
-            {/* Reset Button */}
+
+
             <button
               onClick={() => {
                 setSelectedRating(null);
@@ -346,7 +346,7 @@ export const CoursesPage: React.FC = () => {
           </aside>
         )}
 
-        {/* Course Cards Grid */}
+
         <div className="flex-1 space-y-8 w-full">
           {paginatedCourses.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -357,7 +357,7 @@ export const CoursesPage: React.FC = () => {
           ) : (
             <div className="bg-slate-50 rounded-xl p-12 text-center border border-dashed border-slate-200">
               <p className="text-slate-500 font-medium text-sm">No courses match your active filter settings.</p>
-              <button 
+              <button
                 onClick={() => {
                   setSelectedRating(null);
                   setSelectedLectureRange('');

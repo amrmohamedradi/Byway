@@ -7,7 +7,6 @@ import { useApp } from '../../context/useApp';
 import { ArrowRight } from 'lucide-react';
 import { GoogleLoginButton } from '../../components/auth/GoogleLoginButton';
 import { FacebookLoginButton } from '../../components/auth/FacebookLoginButton';
-import { MicrosoftIcon } from '../../components/common/SocialIcons';
 
 const signupSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -64,8 +63,8 @@ export const SignupPage: React.FC = () => {
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] bg-white overflow-hidden font-sans">
-      
-      {/* Left side: Desk Photo */}
+
+
       <div className="hidden lg:block lg:w-1/2 relative">
         <img
           src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1000&auto=format&fit=crop&q=80"
@@ -75,7 +74,7 @@ export const SignupPage: React.FC = () => {
         <div className="absolute inset-0 bg-slate-900/5 mix-blend-multiply" />
       </div>
 
-      {/* Right side: Signup Form */}
+
       <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-12 lg:px-20 xl:px-28 py-12">
         <div className="max-w-md w-full mx-auto space-y-8">
           <div className="text-left">
@@ -91,7 +90,7 @@ export const SignupPage: React.FC = () => {
               </p>
             )}
 
-            {/* Full Name Row */}
+
             <div>
               <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                 Full Name
@@ -130,7 +129,7 @@ export const SignupPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Username Field */}
+
             <div className="space-y-1.5">
               <label htmlFor="username" className="block text-sm font-semibold text-slate-800">
                 Username
@@ -151,7 +150,7 @@ export const SignupPage: React.FC = () => {
               )}
             </div>
 
-            {/* Email Field */}
+
             <div className="space-y-1.5">
               <label htmlFor="email" className="block text-sm font-semibold text-slate-800">
                 Email
@@ -172,9 +171,9 @@ export const SignupPage: React.FC = () => {
               )}
             </div>
 
-            {/* Passwords Row */}
+
             <div className="grid grid-cols-2 gap-3">
-              {/* Password */}
+
               <div className="space-y-1.5">
                 <label htmlFor="password" className="block text-sm font-semibold text-slate-800">
                   Password
@@ -195,7 +194,7 @@ export const SignupPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Confirm Password */}
+
               <div className="space-y-1.5">
                 <label htmlFor="confirmPassword" className="block text-sm font-semibold text-slate-800">
                   Confirm Password
@@ -217,7 +216,7 @@ export const SignupPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
+
             <div className="pt-2">
               <button
                 type="submit"
@@ -230,7 +229,7 @@ export const SignupPage: React.FC = () => {
             </div>
           </form>
 
-          {/* Social Logins */}
+
           <div className="space-y-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center" aria-hidden="true">
@@ -241,24 +240,11 @@ export const SignupPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
-              {/* Facebook — same component as Login page, mode='signup' changes the label */}
+            <div className="grid grid-cols-2 gap-3">
               <FacebookLoginButton mode="signup" />
-
-              {/* Google — same component as Login page, mode='signup' changes the label */}
               <GoogleLoginButton mode="signup" />
-
-              {/* Microsoft — placeholder (no backend endpoint yet) */}
-              <button
-                type="button"
-                aria-label="Sign up with Microsoft"
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors"
-              >
-                <MicrosoftIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">Microsoft</span>
-              </button>
             </div>
-            
+
             <p className="text-center text-xs text-slate-400">
               Already have an account?{' '}
               <Link to="/login" className="font-semibold text-blue-600 hover:underline">

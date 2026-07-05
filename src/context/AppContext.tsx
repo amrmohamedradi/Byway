@@ -75,9 +75,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return session.user;
   };
 
-  // Used by GoogleLoginButton and FacebookLoginButton after they call externalLoginRequest.
-  // Accepts the fully resolved AuthSession (JWT + refreshToken + user) and commits it to
-  // app state — identical result to a normal login from the rest of the app's perspective.
+
+
+
   const loginWithSession = (session: AuthSession) => {
     saveToken(session.token);
     saveRefreshToken(session.refreshToken);
@@ -91,8 +91,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const addToCart = async (courseId: string) => {
     if (!user) {
-      // Unauthenticated — the UI layer should have already blocked this,
-      // but guard here too so local state is never mutated without a session.
+
+
       return;
     }
 

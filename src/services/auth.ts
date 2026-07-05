@@ -42,7 +42,7 @@ export const API_BASE_URL = normalizeApiBaseUrl(
   ) ?? DEFAULT_API_BASE_URL
 );
 
-// Validate that API_BASE_URL is properly set and warn in console if it appears to be incorrect
+
 if (!API_BASE_URL || API_BASE_URL.trim().length === 0 || API_BASE_URL === '/') {
   console.error(
     `[Auth Service] Critical: API_BASE_URL is not properly configured. ` +
@@ -124,7 +124,7 @@ const userFromToken = (token: string): User => {
 const authRequest = async (path: string, body: unknown): Promise<AuthSession> => {
   let response: Response;
 
-  // Validate API_BASE_URL before making request
+
   if (!API_BASE_URL || API_BASE_URL.trim().length === 0) {
     throw new Error(
       'Authentication service is not properly configured. The backend API URL (VITE_API_BASE_URL) is missing. ' +
@@ -221,12 +221,12 @@ export const getStoredSession = (): AuthSession | null => {
 
 export const loginRequest = (credentials: LoginCredentials) => authRequest('/api/Auth/login', credentials);
 
-// ─── External (Social) Login ──────────────────────────────────────────────────
-// For Google: idToken is the JWT ID token from Google Identity Services.
-// For Facebook: idToken is the short-lived access token from the Facebook JS SDK.
-// The token is passed directly to the backend in a single call and is NEVER stored
-// in localStorage, sessionStorage, or any persistent state. The backend re-validates
-// it against the provider's public keys / introspection endpoint independently.
+
+
+
+
+
+
 export type ExternalProvider = 'google' | 'facebook';
 
 export const externalLoginRequest = (provider: ExternalProvider, idToken: string) =>

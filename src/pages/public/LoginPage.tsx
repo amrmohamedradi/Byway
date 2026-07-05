@@ -7,7 +7,6 @@ import { useApp } from '../../context/useApp';
 import { ArrowRight } from 'lucide-react';
 import { GoogleLoginButton } from '../../components/auth/GoogleLoginButton';
 import { FacebookLoginButton } from '../../components/auth/FacebookLoginButton';
-import { MicrosoftIcon } from '../../components/common/SocialIcons';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -46,8 +45,8 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] bg-white overflow-hidden font-sans">
-      
-      {/* Left side: Login Form */}
+
+
       <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-12 lg:px-20 xl:px-28 py-12">
         <div className="max-w-md w-full mx-auto space-y-8">
           <div className="text-left">
@@ -63,7 +62,7 @@ export const LoginPage: React.FC = () => {
               </p>
             )}
 
-            {/* Email Field */}
+
             <div className="space-y-1.5">
               <label htmlFor="email" className="block text-sm font-semibold text-slate-800">
                 Email
@@ -84,7 +83,7 @@ export const LoginPage: React.FC = () => {
               )}
             </div>
 
-            {/* Password Field */}
+
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm font-semibold text-slate-800">
@@ -110,7 +109,7 @@ export const LoginPage: React.FC = () => {
               )}
             </div>
 
-            {/* Submit Button */}
+
             <div>
               <button
                 type="submit"
@@ -123,7 +122,7 @@ export const LoginPage: React.FC = () => {
             </div>
           </form>
 
-          {/* Social Logins */}
+
           <div className="space-y-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center" aria-hidden="true">
@@ -134,24 +133,11 @@ export const LoginPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
-              {/* Facebook — fully wired to backend via useExternalLogin */}
+            <div className="grid grid-cols-2 gap-3">
               <FacebookLoginButton />
-
-              {/* Google — fully wired to backend via useExternalLogin */}
               <GoogleLoginButton />
-
-              {/* Microsoft — placeholder (no backend endpoint yet) */}
-              <button
-                type="button"
-                aria-label="Sign in with Microsoft"
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-colors"
-              >
-                <MicrosoftIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">Microsoft</span>
-              </button>
             </div>
-            
+
             <p className="text-center text-xs text-slate-400">
               Don't have an account?{' '}
               <Link to="/signup" className="font-semibold text-blue-600 hover:underline">
@@ -162,7 +148,7 @@ export const LoginPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Right side: Typist Image */}
+
       <div className="hidden lg:block lg:w-1/2 relative">
         <img
           src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000&auto=format&fit=crop&q=80"

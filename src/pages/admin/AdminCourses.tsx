@@ -3,9 +3,9 @@ import type { Course } from '../../context/appTypes';
 import { useApp } from '../../context/useApp';
 import { CourseCard } from '../../components/common/CourseCard';
 import { DeleteModal } from '../../components/common/DeleteModal';
-import { 
-  Plus, Search, SlidersHorizontal, ChevronDown, Upload, X, ArrowLeft, Trash2, 
-  Bold, Italic, Underline, Highlighter, Type, List, ListOrdered, Link2, Table, Quote 
+import {
+  Plus, Search, SlidersHorizontal, ChevronDown, Upload, X, ArrowLeft, Trash2,
+  Bold, Italic, Underline, Highlighter, Type, List, ListOrdered, Link2, Table, Quote
 } from 'lucide-react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,7 +33,7 @@ type CourseFormValues = z.infer<typeof courseSchema>;
 export const AdminCourses: React.FC = () => {
   const { courses, instructors, categories, addCourse, updateCourse, deleteCourse } = useApp();
 
-  // Controls states
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCatFilter, setSelectedCatFilter] = useState('All');
   const [catFilterOpen, setCatFilterOpen] = useState(false);
@@ -41,26 +41,26 @@ export const AdminCourses: React.FC = () => {
     ? 'All Categories'
     : categories.find((category) => category.id === selectedCatFilter)?.name ?? 'All Categories';
 
-  // Wizard modal states
+
   const [wizardOpen, setWizardOpen] = useState(false);
   const [wizardMode, setWizardMode] = useState<'add' | 'edit' | 'view'>('add');
   const [wizardStep, setWizardStep] = useState<1 | 2>(1);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
-  // Delete modal states
+
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<Course | null>(null);
 
-  // Pagination State
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  // Reset page when search or category filter changes
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, selectedCatFilter]);
 
-  // Filtering
+
   const filteredCourses = useMemo(() => {
     return courses.filter((c) => {
       const matchSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -76,7 +76,7 @@ export const AdminCourses: React.FC = () => {
 
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
 
-  // Form hooks
+
   const {
     register,
     control,
@@ -96,7 +96,7 @@ export const AdminCourses: React.FC = () => {
     name: 'curriculum'
   });
 
-  // Action helpers
+
   const handleOpenAdd = () => {
     reset({
       title: '',
@@ -155,9 +155,9 @@ export const AdminCourses: React.FC = () => {
   };
 
   const handleNextStep = async () => {
-    // Validate Step 1 fields before proceeding
+
     const isStep1Valid = await trigger([
-      'title', 'categoryId', 'level', 'instructorId', 
+      'title', 'categoryId', 'level', 'instructorId',
       'cost', 'totalHours', 'rate', 'description', 'certification'
     ]);
     if (isStep1Valid) {
@@ -194,11 +194,11 @@ export const AdminCourses: React.FC = () => {
 
   return (
     <div className="space-y-6 text-left font-sans">
-      
-      {/* Container card */}
+
+
       <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-        
-        {/* Control bar */}
+
+
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <h2 className="text-xl font-bold text-slate-800">Courses</h2>
@@ -208,7 +208,7 @@ export const AdminCourses: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Add Course button */}
+
             <button
               onClick={handleOpenAdd}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-colors"
@@ -217,7 +217,7 @@ export const AdminCourses: React.FC = () => {
               Add Course
             </button>
 
-            {/* Categories filter dropdown */}
+
             <div className="relative">
               <button
                 onClick={() => setCatFilterOpen(!catFilterOpen)}
@@ -226,7 +226,7 @@ export const AdminCourses: React.FC = () => {
                 <span>{selectedCategoryFilterLabel}</span>
                 <ChevronDown className="w-4 h-4 text-slate-400" />
               </button>
-              
+
               {catFilterOpen && (
                 <div className="absolute right-0 mt-1 w-44 rounded-lg bg-white border border-slate-200 shadow-lg z-20 py-1 font-semibold text-slate-600 text-xs">
                   {[{ id: 'All', name: 'All Categories' }, ...categories].map((cat) => (
@@ -245,7 +245,7 @@ export const AdminCourses: React.FC = () => {
               )}
             </div>
 
-            {/* Search courses bar */}
+
             <div className="relative max-w-xs flex-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="w-4 h-4 text-slate-400" />
@@ -259,14 +259,14 @@ export const AdminCourses: React.FC = () => {
               />
             </div>
 
-            {/* Filter icon button */}
+
             <button className="p-2.5 border border-slate-200 bg-white hover:bg-slate-50 rounded-lg text-slate-500">
               <SlidersHorizontal className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Grid of Courses */}
+
         {paginatedCourses.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {paginatedCourses.map((c) => (
@@ -286,7 +286,7 @@ export const AdminCourses: React.FC = () => {
           </div>
         )}
 
-        {/* Pagination */}
+
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 pt-6">
             <button
@@ -320,7 +320,7 @@ export const AdminCourses: React.FC = () => {
         )}
       </div>
 
-      {/* Delete confirmation popup */}
+
       <DeleteModal
         isOpen={deleteOpen}
         onClose={() => setDeleteOpen(false)}
@@ -329,23 +329,23 @@ export const AdminCourses: React.FC = () => {
         itemType="Course"
       />
 
-      {/* Wizard Modal Overlay (Add / Edit / View steps sheets) */}
+
       {wizardOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 text-left overflow-y-auto">
           <div className="bg-white rounded-2xl max-w-4xl w-full p-6 shadow-2xl relative my-8 max-h-[90vh] overflow-y-auto">
-            
-            {/* Close button top right */}
-            <button 
+
+
+            <button
               onClick={() => setWizardOpen(false)}
               className="absolute top-4 right-4 p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-50"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Header step row */}
+
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
               {wizardStep === 2 && wizardMode !== 'view' && (
-                <button 
+                <button
                   onClick={() => setWizardStep(1)}
                   className="p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-50"
                 >
@@ -364,12 +364,12 @@ export const AdminCourses: React.FC = () => {
               </div>
             </div>
 
-            {/* Step 1 of 2: Details */}
+
             {wizardStep === 1 && (
               <div className="space-y-6">
                 <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Course details</h4>
-                
-                {/* Upload Image box */}
+
+
                 <div className="border border-dashed border-slate-300 rounded-xl p-6 flex flex-col md:flex-row gap-6 items-center bg-slate-50/50">
                   <div className="w-full md:w-48 h-28 border border-slate-200 rounded-lg flex flex-col items-center justify-center text-slate-400 bg-white">
                     {selectedCourse ? (
@@ -393,9 +393,9 @@ export const AdminCourses: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Form fields */}
+
                 <div className="space-y-4">
-                  {/* Title */}
+
                   <div className="space-y-1.5">
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Course Name</label>
                     <input
@@ -410,7 +410,7 @@ export const AdminCourses: React.FC = () => {
                     {errors.title && <p className="text-[10px] text-red-500 font-semibold">{errors.title.message}</p>}
                   </div>
 
-                  {/* Category and Level */}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Category</label>
@@ -443,7 +443,7 @@ export const AdminCourses: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Instructor and Cost */}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Instructor</label>
@@ -471,7 +471,7 @@ export const AdminCourses: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Hours and Rate */}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Total hours</label>
@@ -497,12 +497,12 @@ export const AdminCourses: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Description and Certification */}
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                    {/* Description */}
+
                     <div className="space-y-1.5 flex flex-col">
                       <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Description</label>
-                      {/* Rich Text Toolbar Mockup */}
+
                       <div className="flex flex-wrap items-center gap-1 p-1.5 border border-b-0 border-slate-300 rounded-t-lg bg-slate-50/50 text-slate-400">
                         <Bold className="w-3.5 h-3.5 cursor-pointer hover:text-slate-600" />
                         <Italic className="w-3.5 h-3.5 cursor-pointer hover:text-slate-600" />
@@ -528,10 +528,10 @@ export const AdminCourses: React.FC = () => {
                       {errors.description && <p className="text-[10px] text-red-500 font-semibold">{errors.description.message}</p>}
                     </div>
 
-                    {/* Certification */}
+
                     <div className="space-y-1.5 flex flex-col">
                       <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Certification</label>
-                      {/* Rich Text Toolbar Mockup */}
+
                       <div className="flex flex-wrap items-center gap-1 p-1.5 border border-b-0 border-slate-300 rounded-t-lg bg-slate-50/50 text-slate-400">
                         <Bold className="w-3.5 h-3.5 cursor-pointer hover:text-slate-600" />
                         <Italic className="w-3.5 h-3.5 cursor-pointer hover:text-slate-600" />
@@ -559,7 +559,7 @@ export const AdminCourses: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Footer button row */}
+
                 <div className="border-t border-slate-100 pt-4 mt-4 flex justify-end gap-3">
                   <button
                     type="button"
@@ -589,15 +589,15 @@ export const AdminCourses: React.FC = () => {
               </div>
             )}
 
-            {/* Step 2 of 2: Curriculum Content Builder */}
+
             {wizardStep === 2 && (
               <div className="space-y-6">
                 <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Add Content</h4>
-                
-                {/* Scrollable listing box */}
+
+
                 <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-1">
                   {wizardMode === 'view' ? (
-                    // Read only view
+
                     selectedCourse?.curriculum.map((section, idx) => (
                       <div key={idx} className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
                         <div>
@@ -617,10 +617,10 @@ export const AdminCourses: React.FC = () => {
                       </div>
                     ))
                   ) : (
-                    // Interactive editor list
+
                     fields.map((field, idx) => (
                       <div key={field.id} className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4 relative">
-                        {/* Name field */}
+
                         <div className="space-y-1.5 text-left">
                           <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Name</label>
                           <input
@@ -631,7 +631,7 @@ export const AdminCourses: React.FC = () => {
                           />
                         </div>
 
-                        {/* Details row */}
+
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1.5 text-left">
                             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Lectures Number</label>
@@ -653,7 +653,7 @@ export const AdminCourses: React.FC = () => {
                           </div>
                         </div>
 
-                        {/* Remove button at subsequent elements bottom left */}
+
                         {fields.length > 1 && (
                           <div className="pt-2 flex justify-start">
                             <button
@@ -670,7 +670,7 @@ export const AdminCourses: React.FC = () => {
                     ))
                   )}
 
-                  {/* Add Content wide dashed button */}
+
                   {wizardMode !== 'view' && (
                     <button
                       type="button"
@@ -683,7 +683,7 @@ export const AdminCourses: React.FC = () => {
                   )}
                 </div>
 
-                {/* Footer button row */}
+
                 <div className="border-t border-slate-100 pt-4 mt-4 flex justify-end gap-3">
                   <button
                     type="button"

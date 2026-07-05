@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { useApp } from './context/useApp';
 
-// Layouts
+
 import { PublicLayout } from './components/layouts/PublicLayout';
 import { AdminLayout } from './components/layouts/AdminLayout';
 
-// Public Pages
+
 import { LandingPage } from './pages/public/LandingPage';
 import { LoginPage } from './pages/public/LoginPage';
 import { SignupPage } from './pages/public/SignupPage';
@@ -17,7 +17,7 @@ import { ShoppingCartPage } from './pages/public/ShoppingCartPage';
 import { CheckoutPage } from './pages/public/CheckoutPage';
 import { PurchaseCompletePage } from './pages/public/PurchaseCompletePage';
 
-// Admin Pages
+
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminInstructors } from './pages/admin/AdminInstructors';
 import { AdminCourses } from './pages/admin/AdminCourses';
@@ -46,7 +46,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          {/* Public/Student Routes */}
+
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<LandingPage />} />
             <Route path="login" element={<LoginPage />} />
@@ -58,7 +58,7 @@ function App() {
             <Route path="purchase-complete" element={<PurchaseCompletePage />} />
           </Route>
 
-          {/* Admin Routes */}
+
           <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboard />} />
@@ -67,7 +67,7 @@ function App() {
             <Route path="courses" element={<AdminCourses />} />
           </Route>
 
-          {/* Fallback redirect */}
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

@@ -20,20 +20,20 @@ type InstructorFormValues = z.infer<typeof instructorSchema>;
 export const AdminInstructors: React.FC = () => {
   const { instructors, addInstructor, updateInstructor, deleteInstructor } = useApp();
 
-  // Search & Filter state
+
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Modal states
+
+
   const [activeModal, setActiveModal] = useState<'add' | 'edit' | 'view' | null>(null);
   const [selectedInst, setSelectedInst] = useState<Instructor | null>(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [instToDelete, setInstToDelete] = useState<Instructor | null>(null);
 
-  // Pagination State
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  // Reset page when search query changes
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
@@ -52,7 +52,7 @@ export const AdminInstructors: React.FC = () => {
 
   const totalPages = Math.ceil(filteredInstructors.length / itemsPerPage);
 
-  // Form setup
+
   const {
     register,
     handleSubmit,
@@ -78,7 +78,7 @@ export const AdminInstructors: React.FC = () => {
       name: inst.name,
       jobTitle: inst.jobTitle,
       rate: inst.rate,
-      description: inst.bio, // map bio to description
+      description: inst.bio,
     });
     setSelectedInst(inst);
     setActiveModal('edit');
@@ -127,11 +127,11 @@ export const AdminInstructors: React.FC = () => {
 
   return (
     <div className="space-y-6 text-left font-sans">
-      
-      {/* Instructors Container Card */}
+
+
       <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-        
-        {/* Controls row */}
+
+
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <h2 className="text-xl font-bold text-slate-800">Instructors</h2>
@@ -141,7 +141,7 @@ export const AdminInstructors: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Add Instructor button */}
+
             <button
               onClick={handleOpenAddModal}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-colors"
@@ -150,7 +150,7 @@ export const AdminInstructors: React.FC = () => {
               Add Instructor
             </button>
 
-            {/* Search inputs */}
+
             <div className="relative max-w-xs flex-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="w-4 h-4 text-slate-400" />
@@ -164,14 +164,14 @@ export const AdminInstructors: React.FC = () => {
               />
             </div>
 
-            {/* Filter buttons */}
+
             <button className="p-2.5 border border-slate-200 bg-white hover:bg-slate-50 rounded-lg text-slate-500">
               <SlidersHorizontal className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Instructors Table */}
+
         <div className="overflow-x-auto border border-slate-200 rounded-xl">
           <table className="min-w-full divide-y divide-slate-200 bg-white">
             <thead className="bg-slate-50 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -186,27 +186,27 @@ export const AdminInstructors: React.FC = () => {
               {paginatedInstructors.length > 0 ? (
                 paginatedInstructors.map((inst) => (
                   <tr key={inst.id} className="hover:bg-slate-50/50 transition-colors">
-                    {/* Name column */}
+
                     <td className="px-6 py-4 flex items-center gap-3">
-                      <img 
-                        src={inst.image} 
+                      <img
+                        src={inst.image}
                         alt={inst.name}
-                        className="w-8 h-8 rounded-full object-cover border border-slate-200 flex-shrink-0" 
+                        className="w-8 h-8 rounded-full object-cover border border-slate-200 flex-shrink-0"
                       />
                       <span className="font-bold text-slate-800">{inst.name}</span>
                     </td>
-                    
-                    {/* Job Title column */}
+
+
                     <td className="px-6 py-4 text-slate-500">{inst.jobTitle}</td>
-                    
-                    {/* Rate column */}
+
+
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <StarRating rating={inst.rate} size={14} />
                       </div>
                     </td>
 
-                    {/* Action buttons */}
+
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                         <button
@@ -245,7 +245,7 @@ export const AdminInstructors: React.FC = () => {
           </table>
         </div>
 
-        {/* Pagination bar */}
+
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 pt-6">
             <button
@@ -279,7 +279,7 @@ export const AdminInstructors: React.FC = () => {
         )}
       </div>
 
-      {/* Reusable Delete Dialog */}
+
       <DeleteModal
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
@@ -288,19 +288,19 @@ export const AdminInstructors: React.FC = () => {
         itemType="Instructor"
       />
 
-      {/* CRUD Overlay Modals (Add / Edit / View Popup sheets) */}
+
       {activeModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 text-left">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
-            
-            {/* Header */}
+
+
             <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
               <h3 className="text-lg font-bold text-slate-800">
                 {activeModal === 'add' && 'Add Instructor'}
                 {activeModal === 'edit' && 'Update Instructor'}
                 {activeModal === 'view' && 'View Instructor'}
               </h3>
-              <button 
+              <button
                 onClick={() => setActiveModal(null)}
                 className="p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-50"
               >
@@ -308,7 +308,7 @@ export const AdminInstructors: React.FC = () => {
               </button>
             </div>
 
-            {/* Avatar circle camera indicator */}
+
             <div className="flex justify-center mb-6">
               <div className="relative">
                 <div className="w-20 h-20 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400">
@@ -326,9 +326,9 @@ export const AdminInstructors: React.FC = () => {
               </div>
             </div>
 
-            {/* Form */}
+
             {activeModal === 'view' ? (
-              // View modal detail layout
+
               <div className="space-y-4 text-slate-600 text-sm">
                 <div>
                   <strong className="block text-slate-800 text-xs font-bold uppercase tracking-wider mb-1">Name</strong>
@@ -355,10 +355,10 @@ export const AdminInstructors: React.FC = () => {
                 </div>
               </div>
             ) : (
-              // Add / Edit interactive forms
+
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                
-                {/* Name */}
+
+
                 <div className="space-y-1.5">
                   <label className="block text-sm font-semibold text-slate-800">Name</label>
                   <input
@@ -372,7 +372,7 @@ export const AdminInstructors: React.FC = () => {
                   {errors.name && <p className="text-[10px] text-red-500 font-semibold">{errors.name.message}</p>}
                 </div>
 
-                {/* Job Title and Rate */}
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="block text-sm font-semibold text-slate-800">Job Title</label>
@@ -404,7 +404,7 @@ export const AdminInstructors: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Description */}
+
                 <div className="space-y-1.5">
                   <label className="block text-sm font-semibold text-slate-800">Description</label>
                   <textarea
@@ -418,7 +418,7 @@ export const AdminInstructors: React.FC = () => {
                   {errors.description && <p className="text-[10px] text-red-500 font-semibold">{errors.description.message}</p>}
                 </div>
 
-                {/* Action buttons */}
+
                 <div className="border-t border-slate-100 pt-4 mt-2 flex justify-end gap-3">
                   <button
                     type="button"

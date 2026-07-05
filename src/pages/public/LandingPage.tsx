@@ -7,10 +7,7 @@ import { Compass, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PageLoader } from '../../components/common/PageLoader';
 
-/**
- * Hook to manage carousel scroll state and visibility of navigation arrows.
- * Hides arrows when content fits fully on screen, and hides directional arrows at bounds.
- */
+
 const useCarousel = (itemCount: number) => {
   const ref = useRef<HTMLDivElement>(null);
   const [showLeft, setShowLeft] = useState(false);
@@ -76,9 +73,9 @@ export const LandingPage: React.FC = () => {
   const { courses, instructors, categories, user } = useApp();
   const navigate = useNavigate();
 
-  // Get top 4 courses
+
   const topCourses = courses.slice(0, 4);
-  // Get top instructors
+
   const topInstructors = instructors.slice(0, 5);
 
   const categoriesCarousel = useCarousel(Math.min(categories.length, 4));
@@ -92,18 +89,18 @@ export const LandingPage: React.FC = () => {
     { label: 'Top-rated courses', value: courses.filter((course) => course.rate >= 4).length.toLocaleString() },
   ];
 
-  // Show branded loader while initial catalog data is fetching
+
   if (courses.length === 0 && instructors.length === 0 && categories.length === 0) {
     return <PageLoader message="Loading Byway..." />;
   }
 
   return (
     <div className="bg-white">
-      {/* 1. Hero Section */}
+
       <section className="relative bg-slate-50 py-16 overflow-hidden border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Left Text */}
+
+
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -126,7 +123,7 @@ export const LandingPage: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Right 3D Visual Section */}
+
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -139,7 +136,7 @@ export const LandingPage: React.FC = () => {
               </Suspense>
             </div>
 
-            {/* Community badge tag overlaid on 3D scene */}
+
             <div className="absolute bottom-6 right-4 sm:right-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-3 max-w-[190px] border border-slate-100/50 flex flex-col items-center gap-1.5 z-10 hover:scale-105 transition-transform">
               <div className="flex -space-x-2">
                 <img className="w-7 h-7 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50" alt="" />
@@ -154,7 +151,7 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. Stats Bar */}
+
       <section className="bg-slate-100/50 py-10 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x-0 md:divide-x md:divide-slate-200">
           {stats.map((stat, idx) => (
@@ -166,7 +163,7 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Top Categories Section */}
+
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
@@ -200,8 +197,8 @@ export const LandingPage: React.FC = () => {
             {categories.slice(0, 4).map((cat) => {
               const categoryCourses = courses.filter((course) => course.categoryId === cat.id || course.category === cat.name).length;
               return (
-                <div 
-                  key={cat.id} 
+                <div
+                  key={cat.id}
                   onClick={() => navigate(`/courses?category=${encodeURIComponent(cat.name)}`)}
                   className="w-[calc(50%-12px)] md:w-[calc(25%-18px)] flex-shrink-0 snap-start bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg hover:border-blue-200 transition-all text-center cursor-pointer group"
                 >
@@ -223,7 +220,7 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Top Courses Section */}
+
       <section className="py-16 bg-slate-50/50 border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
@@ -241,7 +238,7 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. Top Instructors Section */}
+
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
@@ -273,22 +270,22 @@ export const LandingPage: React.FC = () => {
             className="flex overflow-x-auto scrollbar-none gap-6 pb-2 scroll-smooth snap-x snap-mandatory"
           >
             {topInstructors.map((instructor) => (
-              <div 
+              <div
                 key={instructor.id}
                 className="w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] lg:w-[calc(20%-19.2px)] flex-shrink-0 snap-start bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-lg transition-all text-center flex flex-col justify-between"
               >
                 <div>
                   <div className="w-24 h-24 rounded-full mx-auto overflow-hidden bg-slate-100 mb-4 border-2 border-slate-100 shadow-sm">
-                    <img 
-                      src={instructor.image} 
+                    <img
+                      src={instructor.image}
                       alt={instructor.name}
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="font-bold text-slate-800 text-base leading-tight mb-0.5">{instructor.name}</h3>
                   <p className="text-xs text-slate-400 mb-3">{instructor.jobTitle}</p>
                 </div>
-                
+
                 <div className="border-t border-slate-100 pt-3 mt-2 flex items-center justify-center gap-1.5">
                   <StarRating rating={instructor.rate} size={13} />
                   <span className="text-[10px] font-bold text-slate-400">{instructor.rate}</span>
@@ -300,7 +297,7 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. Learner Testimonials */}
+
       <section className="py-16 bg-slate-50/50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
@@ -332,7 +329,7 @@ export const LandingPage: React.FC = () => {
             className="flex overflow-x-auto scrollbar-none gap-6 pb-2 scroll-smooth snap-x snap-mandatory"
           >
             {topInstructors.slice(0, 3).map((instructor) => (
-              <div 
+              <div
                 key={instructor.id}
                 className="w-full md:w-[calc(33.333%-16px)] flex-shrink-0 snap-start bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between gap-6"
               >
@@ -340,12 +337,12 @@ export const LandingPage: React.FC = () => {
                   <Quote className="w-8 h-8 text-blue-400 rotate-180 fill-blue-50/50" />
                   <p className="text-slate-600 text-sm leading-relaxed text-left">"{instructor.bio || instructor.description}"</p>
                 </div>
-                
+
                 <div className="flex items-center gap-3 border-t border-slate-100 pt-4">
-                  <img 
-                    src={instructor.image} 
+                  <img
+                    src={instructor.image}
                     alt={instructor.name}
-                    className="w-10 h-10 rounded-full object-cover border border-slate-100" 
+                    className="w-10 h-10 rounded-full object-cover border border-slate-100"
                   />
                   <div className="text-left">
                     <h4 className="font-bold text-slate-800 text-sm">{instructor.name}</h4>
@@ -358,26 +355,26 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 7. Become an Instructor banner */}
+
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          {/* Photo */}
+
           <div className="md:col-span-6 flex justify-center relative">
             <div className="w-72 h-72 rounded-full bg-violet-100 absolute -z-10 bottom-4 left-1/2 -translate-x-1/2"></div>
-            <img 
-              src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80" 
+            <img
+              src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80"
               alt="Become Instructor"
               className="w-80 h-80 rounded-2xl object-cover shadow-lg hover:rotate-2 transition-transform duration-300"
             />
           </div>
-          {/* Form details */}
+
           <div className="md:col-span-6 text-left space-y-4">
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Become an Instructor</h2>
             <p className="text-slate-500 text-sm leading-relaxed">
               Instructors from around the world teach millions of students on Byway. We provide the tools and skills to teach what you love.
             </p>
             <div>
-              <button 
+              <button
                 onClick={() => user ? navigate('/admin/dashboard') : navigate('/login')}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-slate-950 hover:bg-slate-800 text-white text-sm font-semibold transition-all group shadow-md"
               >
@@ -389,17 +386,17 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 8. Transform your life banner */}
+
       <section className="py-16 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          {/* Text details */}
+
           <div className="md:col-span-6 text-left space-y-4 order-2 md:order-1">
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Transform your life through education</h2>
             <p className="text-slate-500 text-sm leading-relaxed">
               Learners around the world are launching new careers, advancing in their fields, and enriching their lives.
             </p>
             <div>
-              <button 
+              <button
                 onClick={() => navigate('/courses')}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-slate-950 hover:bg-slate-800 text-white text-sm font-semibold transition-all group shadow-md"
               >
@@ -408,11 +405,11 @@ export const LandingPage: React.FC = () => {
               </button>
             </div>
           </div>
-          {/* Photo */}
+
           <div className="md:col-span-6 flex justify-center relative order-1 md:order-2">
             <div className="w-72 h-72 rounded-full bg-blue-50 absolute -z-10 bottom-4 left-1/2 -translate-x-1/2"></div>
-            <img 
-              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=80" 
+            <img
+              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=80"
               alt="Transform Life"
               className="w-80 h-80 rounded-2xl object-cover shadow-lg hover:-rotate-2 transition-transform duration-300"
             />

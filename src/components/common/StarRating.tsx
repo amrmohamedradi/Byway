@@ -20,7 +20,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
     <div className="flex items-center gap-0.5">
       {Array.from({ length: maxStars }).map((_, idx) => {
         const starValue = idx + 1;
-        // Check if star should be filled (for floating numbers, let's round or check fractional fill)
+
         const isFilled = starValue <= Math.round(rating);
 
         return (

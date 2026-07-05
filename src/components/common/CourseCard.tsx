@@ -24,7 +24,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   const instructor = instructors.find((i) => i.id === course.instructorId);
   const instructorName = instructor ? instructor.name : 'Unknown Instructor';
 
-  // Format currency
+
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -32,8 +32,8 @@ export const CourseCard: React.FC<CourseCardProps> = ({
 
   const CardContent = (
     <div className="flex flex-col h-full bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
-      
-      {/* Course Cover Image with Tag Overlay */}
+
+
       <div className="relative aspect-[700/430] overflow-hidden bg-slate-100">
         <img
           src={course.image}
@@ -46,34 +46,34 @@ export const CourseCard: React.FC<CourseCardProps> = ({
         </span>
       </div>
 
-      {/* Info details */}
+
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div className="space-y-2">
-          {/* Title */}
+
           <h3 className="font-bold text-slate-800 text-base line-clamp-2 leading-tight">
             {course.title}
           </h3>
-          
-          {/* Author */}
+
+
           <p className="text-xs text-slate-500">By {instructorName}</p>
 
-          {/* Rating Stars */}
+
           <div className="flex items-center gap-1.5">
             <StarRating rating={course.rate} />
             <span className="text-xs font-medium text-slate-400">({course.rate})</span>
           </div>
 
-          {/* Details Row */}
+
           <p className="text-xs text-slate-400 font-medium">
             {course.totalHours} Total Hours. {course.lectures} Lectures. {course.level}
           </p>
         </div>
 
-        {/* Bottom row: Price & Admin actions */}
+
         <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between">
           <span className="text-lg font-bold text-slate-900">{formattedPrice}</span>
-          
-          {/* Admin management buttons */}
+
+
           {isAdmin && (
             <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
               <button
@@ -113,7 +113,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
     </div>
   );
 
-  // If in admin mode, click triggers the View action; if in public mode, click navigates to course page.
+
   if (isAdmin) {
     return (
       <div onClick={onView} className="cursor-pointer h-full">

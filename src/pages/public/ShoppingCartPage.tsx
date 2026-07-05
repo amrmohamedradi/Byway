@@ -11,17 +11,17 @@ export const ShoppingCartPage: React.FC = () => {
   const navigate = useNavigate();
   const [removeTarget, setRemoveTarget] = useState<Course | null>(null);
 
-  // Find course items matching cart ids
+
   const cartItems = courses.filter(course => cart.includes(course.id));
 
-  // Pricing calculations
+
   const subtotal = cartItems.reduce((sum, item) => sum + item.cost, 0);
   const discount = 0.00;
-  const taxRate = 0.15; // 15% tax
+  const taxRate = 0.15;
   const tax = subtotal * taxRate;
   const total = subtotal - discount + tax;
 
-  // Format currency
+
   const formatVal = (val: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -31,8 +31,8 @@ export const ShoppingCartPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-left font-sans">
-      
-      {/* Breadcrumb banner */}
+
+
       <div className="text-xs font-semibold text-slate-400 flex gap-2 items-center mb-6">
         <Link to="/courses" className="hover:text-slate-600">Courses</Link>
         <span>&gt;</span>
@@ -50,26 +50,26 @@ export const ShoppingCartPage: React.FC = () => {
 
       {cartItems.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Columns - Cart Items */}
+
+
           <div className="lg:col-span-8 space-y-4">
             {cartItems.map((item) => {
               const instructor = instructors.find(i => i.id === item.instructorId);
               return (
-                <div 
+                <div
                   key={item.id}
                   className="flex flex-col sm:flex-row gap-4 p-4 border border-slate-200 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow relative"
                 >
-                  {/* Image */}
+
                   <div className="w-full sm:w-40 aspect-[700/430] sm:h-24 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
-                    <img 
-                      src={item.image} 
+                    <img
+                      src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full object-cover"
                     />
                   </div>
 
-                  {/* Details */}
+
                   <div className="flex-1 flex flex-col justify-between text-left space-y-1.5">
                     <div>
                       <h3 className="font-bold text-slate-800 text-sm sm:text-base leading-tight">
@@ -89,7 +89,7 @@ export const ShoppingCartPage: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* Remove CTA */}
+
                     <div>
                       <button
                         onClick={() => setRemoveTarget(item)}
@@ -100,7 +100,7 @@ export const ShoppingCartPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Price */}
+
                   <div className="sm:text-right font-extrabold text-slate-900 text-lg sm:pl-4 self-center sm:self-start">
                     {formatVal(item.cost)}
                   </div>
@@ -109,13 +109,13 @@ export const ShoppingCartPage: React.FC = () => {
             })}
           </div>
 
-          {/* Right Column - Order Summary Widget */}
+
           <div className="lg:col-span-4 sticky top-24">
             <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-lg space-y-6">
               <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-3">
                 Order Details
               </h2>
-              
+
               <div className="space-y-3.5 text-sm font-semibold text-slate-600">
                 <div className="flex items-center justify-between">
                   <span>Price</span>
@@ -129,7 +129,7 @@ export const ShoppingCartPage: React.FC = () => {
                   <span>Tax</span>
                   <span className="text-slate-900">{formatVal(tax)}</span>
                 </div>
-                
+
                 <div className="border-t border-slate-100 pt-4 flex items-center justify-between text-base font-extrabold text-slate-900">
                   <span>Total</span>
                   <span className="text-lg">{formatVal(total)}</span>
@@ -152,7 +152,7 @@ export const ShoppingCartPage: React.FC = () => {
           <p className="text-slate-400 text-xs font-semibold leading-relaxed">
             It looks like you haven't added any courses to your shopping cart yet. Let's find some courses to kickstart your learning journey!
           </p>
-          <Link 
+          <Link
             to="/courses"
             className="mt-2 px-5 py-2.5 bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs rounded-lg shadow transition-colors"
           >
@@ -161,7 +161,7 @@ export const ShoppingCartPage: React.FC = () => {
         </div>
       )}
 
-      {/* Remove from cart confirmation */}
+
       <DeleteModal
         isOpen={Boolean(removeTarget)}
         onClose={() => setRemoveTarget(null)}

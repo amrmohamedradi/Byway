@@ -10,7 +10,6 @@ interface ConfirmDialogProps {
   confirmLabel?: string;
   cancelLabel?: string;
   icon?: React.ReactNode;
-  /** When true the confirm button uses a red/danger palette */
   danger?: boolean;
 }
 
@@ -28,12 +27,10 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   const [isPending, setIsPending] = React.useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
-  // Reset pending state when dialog opens
   useEffect(() => {
     if (isOpen) setIsPending(false);
   }, [isOpen]);
 
-  // Close on Escape key
   useEffect(() => {
     if (!isOpen) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -73,7 +70,6 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         aria-modal="true"
         aria-labelledby="confirm-dialog-title"
       >
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
@@ -82,7 +78,6 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <X className="w-5 h-5" />
         </button>
 
-        {/* Icon circle */}
         {icon && (
           <div className="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center mb-5 mt-2">
             <div className="w-14 h-14 rounded-full bg-slate-100/60 flex items-center justify-center">
@@ -91,7 +86,6 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           </div>
         )}
 
-        {/* Title */}
         <h2
           id="confirm-dialog-title"
           className="text-lg font-bold text-slate-800 mb-2"
@@ -99,12 +93,10 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           {title}
         </h2>
 
-        {/* Message */}
         <p className="text-slate-500 text-sm leading-relaxed px-2 mb-8">
           {message}
         </p>
 
-        {/* Buttons */}
         <div className="flex items-center gap-3 w-full">
           <button
             onClick={onClose}

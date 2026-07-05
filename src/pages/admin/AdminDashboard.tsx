@@ -31,13 +31,13 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="space-y-8 text-left font-sans">
-      
-      {/* Stat Row */}
+
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {statCards.map((card, idx) => {
           const IconComp = card.icon;
           return (
-            <div 
+            <div
               key={idx}
               className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
             >
