@@ -7,7 +7,7 @@ import { Compass, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PageLoader } from '../../components/common/PageLoader';
 
-const HeroScene3D = lazy(() => import('../../components/common/HeroScene3D'));
+const HeroBookParticles = lazy(() => import('../../components/common/HeroBookParticles'));
 
 const CanvasFallback: React.FC = () => (
   <div className="w-full h-full min-h-[300px] sm:min-h-[450px] rounded-2xl bg-slate-100/50 animate-pulse flex flex-col items-center justify-center gap-3">
@@ -75,7 +75,7 @@ export const LandingPage: React.FC = () => {
           >
             <div className="w-full h-full relative rounded-2xl overflow-hidden bg-slate-50/50 border border-slate-100/80 shadow-inner flex items-center justify-center">
               <Suspense fallback={<CanvasFallback />}>
-                <HeroScene3D />
+                <HeroBookParticles />
               </Suspense>
             </div>
 
