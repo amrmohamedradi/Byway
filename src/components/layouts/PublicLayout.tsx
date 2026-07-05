@@ -128,7 +128,7 @@ export const PublicLayout: React.FC = () => {
 
 
       <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
 
           <div className="flex flex-col gap-4">
@@ -153,19 +153,6 @@ export const PublicLayout: React.FC = () => {
             </ul>
           </div>
 
-
-          <div>
-            <h3 className="text-white font-semibold text-base mb-4">Programs</h3>
-            <ul className="space-y-2 text-sm text-slate-400">
-              {categories.slice(0, 5).map((category) => (
-                <li key={category.id}>
-                  <Link to={`/courses?category=${encodeURIComponent(category.name)}`} className="hover:text-white transition-colors">
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
 
           <div className="flex flex-col gap-4">
