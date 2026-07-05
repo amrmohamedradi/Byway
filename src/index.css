@@ -29,3 +29,15 @@
 ::-webkit-scrollbar-thumb {
   @apply bg-slate-300 rounded hover:bg-slate-400;
 }
+
+/* Utility to hide scrollbars */
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+

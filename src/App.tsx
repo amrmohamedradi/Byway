@@ -24,6 +24,8 @@ import { AdminCourses } from './pages/admin/AdminCourses';
 import { AdminCategories } from './pages/admin/AdminCategories';
 
 
+import { ScrollToTop } from './components/common/ScrollToTop';
+
 const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useApp();
 
@@ -42,6 +44,7 @@ function App() {
   return (
     <AppProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Public/Student Routes */}
           <Route path="/" element={<PublicLayout />}>

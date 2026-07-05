@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/useApp';
 import { CourseCard } from '../../components/common/CourseCard';
@@ -6,6 +6,62 @@ import { StarRating } from '../../components/common/StarRating';
 import { Compass, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PageLoader } from '../../components/common/PageLoader';
+
+/**
+ * Hook to manage carousel scroll state and visibility of navigation arrows.
+ * Hides arrows when content fits fully on screen, and hides directional arrows at bounds.
+ */
+const useCarousel = (itemCount: number) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(false);
+
+  const checkScroll = () => {
+    const el = ref.current;
+    if (!el) return;
+
+    const canScrollLeft = el.scrollLeft > 5;
+    const remainingScroll = Math.max(0, el.scrollWidth - el.scrollLeft - el.clientWidth);
+    const canScrollRight = remainingScroll > 5;
+
+    setShowLeft(canScrollLeft);
+    setShowRight(canScrollRight);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      checkScroll();
+    }, 150);
+
+    const el = ref.current;
+    if (el) {
+      el.addEventListener('scroll', checkScroll, { passive: true });
+    }
+    window.addEventListener('resize', checkScroll);
+
+    return () => {
+      clearTimeout(timer);
+      if (el) {
+        el.removeEventListener('scroll', checkScroll);
+      }
+      window.removeEventListener('resize', checkScroll);
+    };
+  }, [itemCount]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    const el = ref.current;
+    if (!el) return;
+
+    const scrollAmount = el.clientWidth * 0.75;
+    el.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
+  return { ref, showLeft, showRight, scroll, checkScroll };
+};
+
 
 const HeroBookParticles = lazy(() => import('../../components/common/HeroBookParticles'));
 
@@ -24,6 +80,10 @@ export const LandingPage: React.FC = () => {
   const topCourses = courses.slice(0, 4);
   // Get top instructors
   const topInstructors = instructors.slice(0, 5);
+
+  const categoriesCarousel = useCarousel(Math.min(categories.length, 4));
+  const instructorsCarousel = useCarousel(topInstructors.length);
+  const testimonialsCarousel = useCarousel(Math.min(topInstructors.length, 3));
 
   const stats = [
     { label: 'Courses available', value: courses.length.toLocaleString() },
@@ -111,24 +171,39 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">Top Categories</h2>
-            <div className="flex items-center gap-2">
-              <button className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+            {(categoriesCarousel.showLeft || categoriesCarousel.showRight) && (
+              <div className="flex items-center gap-2">
+                {categoriesCarousel.showLeft && (
+                  <button
+                    onClick={() => categoriesCarousel.scroll('left')}
+                    className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                )}
+                {categoriesCarousel.showRight && (
+                  <button
+                    onClick={() => categoriesCarousel.scroll('right')}
+                    className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div
+            ref={categoriesCarousel.ref}
+            className="flex overflow-x-auto scrollbar-none gap-6 pb-2 scroll-smooth snap-x snap-mandatory"
+          >
             {categories.slice(0, 4).map((cat) => {
               const categoryCourses = courses.filter((course) => course.categoryId === cat.id || course.category === cat.name).length;
               return (
                 <div 
                   key={cat.id} 
                   onClick={() => navigate(`/courses?category=${encodeURIComponent(cat.name)}`)}
-                  className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg hover:border-blue-200 transition-all text-center cursor-pointer group"
+                  className="w-[calc(50%-12px)] md:w-[calc(25%-18px)] flex-shrink-0 snap-start bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg hover:border-blue-200 transition-all text-center cursor-pointer group"
                 >
                   <div className="w-14 h-14 rounded-full mx-auto flex items-center justify-center mb-4 bg-blue-50 text-blue-600 group-hover:scale-110 transition-transform">
                     {cat.imagePath ? (
@@ -171,21 +246,36 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">Top Instructors</h2>
-            <div className="flex items-center gap-2">
-              <button className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+            {(instructorsCarousel.showLeft || instructorsCarousel.showRight) && (
+              <div className="flex items-center gap-2">
+                {instructorsCarousel.showLeft && (
+                  <button
+                    onClick={() => instructorsCarousel.scroll('left')}
+                    className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                )}
+                {instructorsCarousel.showRight && (
+                  <button
+                    onClick={() => instructorsCarousel.scroll('right')}
+                    className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div
+            ref={instructorsCarousel.ref}
+            className="flex overflow-x-auto scrollbar-none gap-6 pb-2 scroll-smooth snap-x snap-mandatory"
+          >
             {topInstructors.map((instructor) => (
               <div 
                 key={instructor.id}
-                className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-lg transition-all text-center flex flex-col justify-between"
+                className="w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] lg:w-[calc(20%-19.2px)] flex-shrink-0 snap-start bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-lg transition-all text-center flex flex-col justify-between"
               >
                 <div>
                   <div className="w-24 h-24 rounded-full mx-auto overflow-hidden bg-slate-100 mb-4 border-2 border-slate-100 shadow-sm">
@@ -215,21 +305,36 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">What Our Customer Say About Us</h2>
-            <div className="flex items-center gap-2">
-              <button className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+            {(testimonialsCarousel.showLeft || testimonialsCarousel.showRight) && (
+              <div className="flex items-center gap-2">
+                {testimonialsCarousel.showLeft && (
+                  <button
+                    onClick={() => testimonialsCarousel.scroll('left')}
+                    className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                )}
+                {testimonialsCarousel.showRight && (
+                  <button
+                    onClick={() => testimonialsCarousel.scroll('right')}
+                    className="p-2 rounded-full border border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            ref={testimonialsCarousel.ref}
+            className="flex overflow-x-auto scrollbar-none gap-6 pb-2 scroll-smooth snap-x snap-mandatory"
+          >
             {topInstructors.slice(0, 3).map((instructor) => (
               <div 
                 key={instructor.id}
-                className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between gap-6"
+                className="w-full md:w-[calc(33.333%-16px)] flex-shrink-0 snap-start bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between gap-6"
               >
                 <div className="space-y-4">
                   <Quote className="w-8 h-8 text-blue-400 rotate-180 fill-blue-50/50" />
