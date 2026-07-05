@@ -6,7 +6,7 @@ import { FacebookIcon, GithubIcon, TwitterIcon } from '../common/SocialIcons';
 import { ConfirmDialog } from '../common/ConfirmDialog';
 
 export const PublicLayout: React.FC = () => {
-  const { user, cart, categories, logout } = useApp();
+  const { user, cart, logout } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
