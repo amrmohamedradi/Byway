@@ -3,12 +3,19 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../../context/useApp';
 import { ShoppingCart, LogOut, Search } from 'lucide-react';
 import { FacebookIcon, GithubIcon, TwitterIcon } from '../common/SocialIcons';
+import { ConfirmDialog } from '../common/ConfirmDialog';
 
 export const PublicLayout: React.FC = () => {
   const { user, cart, categories, logout } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+
+  const handleLogoutConfirmed = () => {
+    logout();
+    navigate('/');
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +85,7 @@ export const PublicLayout: React.FC = () => {
 
                 {/* Sign out */}
                 <button 
-                  onClick={logout} 
+                  onClick={() => setLogoutDialogOpen(true)} 
                   title="Logout" 
                   className="p-2 text-slate-500 hover:text-red-600 transition-colors"
                 >
@@ -194,6 +201,18 @@ export const PublicLayout: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Logout confirmation dialog */}
+      <ConfirmDialog
+        isOpen={logoutDialogOpen}
+        onClose={() => setLogoutDialogOpen(false)}
+        onConfirm={handleLogoutConfirmed}
+        title="Log out?"
+        message="Are you sure you want to log out of your account?"
+        confirmLabel="Log Out"
+        cancelLabel="Stay"
+        icon={<LogOut className="w-7 h-7 text-slate-500" />}
+      />
     </div>
   );
 };

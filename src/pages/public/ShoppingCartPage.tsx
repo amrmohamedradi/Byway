@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/useApp';
 import { StarRating } from '../../components/common/StarRating';
 import { AlertCircle } from 'lucide-react';
+import { DeleteModal } from '../../components/common/DeleteModal';
+import type { Course } from '../../context/appTypes';
 
 export const ShoppingCartPage: React.FC = () => {
   const { user, cart, courses, instructors, removeFromCart } = useApp();
   const navigate = useNavigate();
+  const [removeTarget, setRemoveTarget] = useState<Course | null>(null);
 
   // Find course items matching cart ids
   const cartItems = courses.filter(course => cart.includes(course.id));
@@ -89,7 +92,7 @@ export const ShoppingCartPage: React.FC = () => {
                     {/* Remove CTA */}
                     <div>
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => setRemoveTarget(item)}
                         className="text-xs font-bold text-red-500 hover:text-red-700 transition-colors flex items-center gap-1"
                       >
                         Remove
@@ -157,6 +160,20 @@ export const ShoppingCartPage: React.FC = () => {
           </Link>
         </div>
       )}
+
+      {/* Remove from cart confirmation */}
+      <DeleteModal
+        isOpen={Boolean(removeTarget)}
+        onClose={() => setRemoveTarget(null)}
+        onConfirm={async () => {
+          if (removeTarget) {
+            await removeFromCart(removeTarget.id);
+            setRemoveTarget(null);
+          }
+        }}
+        itemName={removeTarget?.title ?? ''}
+        itemType="Cart Item"
+      />
     </div>
   );
 };

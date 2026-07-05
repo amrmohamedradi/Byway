@@ -90,9 +90,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const addToCart = async (courseId: string) => {
-    if (user) {
-      await api.addCartItem(courseId);
+    if (!user) {
+      // Unauthenticated — the UI layer should have already blocked this,
+      // but guard here too so local state is never mutated without a session.
+      return;
     }
+
+    await api.addCartItem(courseId);
 
     if (!cart.includes(courseId)) {
       setCart([...cart, courseId]);

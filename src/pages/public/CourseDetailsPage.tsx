@@ -9,11 +9,12 @@ import {
 import { FacebookIcon, GithubIcon, TwitterIcon } from '../../components/common/SocialIcons';
 import { getSimilarCourses } from '../../services/api';
 import type { Course } from '../../context/appTypes';
+import toast from 'react-hot-toast';
 
 export const CourseDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { courses, instructors, cart, addToCart } = useApp();
+  const { user, courses, instructors, cart, addToCart } = useApp();
 
   const [activeTab, setActiveTab] = useState<'desc' | 'inst' | 'content'>('desc');
   const [recommendedCourses, setRecommendedCourses] = useState<Course[]>([]);
@@ -44,10 +45,25 @@ export const CourseDetailsPage: React.FC = () => {
   const isInCart = cart.includes(course.id);
 
   const handleAddToCartClick = () => {
+    if (!user) {
+      toast.error('Please sign in to add courses to your cart', {
+        icon: '🔒',
+        id: 'auth-required',
+      });
+      return;
+    }
     addToCart(course.id);
   };
 
   const handleBuyNowClick = () => {
+    if (!user) {
+      toast.error('Please sign in to purchase courses', {
+        icon: '🔒',
+        id: 'auth-required',
+      });
+      navigate('/login');
+      return;
+    }
     addToCart(course.id);
     navigate('/checkout');
   };

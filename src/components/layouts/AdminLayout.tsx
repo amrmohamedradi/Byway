@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/useApp';
 import { LayoutDashboard, Users, FolderOpen, LogOut, Bell, Tags } from 'lucide-react';
+import { ConfirmDialog } from '../common/ConfirmDialog';
 
 export const AdminLayout: React.FC = () => {
   const { user, logout } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogout = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  const confirmLogout = () => {
     logout();
     navigate('/');
   };
@@ -59,7 +65,8 @@ export const AdminLayout: React.FC = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <>
+      <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
       
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between flex-shrink-0">
@@ -157,6 +164,18 @@ export const AdminLayout: React.FC = () => {
         </main>
       </div>
     </div>
+
+
+      <ConfirmDialog
+        isOpen={logoutDialogOpen}
+        onClose={() => setLogoutDialogOpen(false)}
+        onConfirm={confirmLogout}
+        title="Log out?"
+        message="Are you sure you want to log out of your admin session?"
+        confirmLabel="Log Out"
+        cancelLabel="Stay"
+        icon={<LogOut className="w-7 h-7 text-slate-500" />}
+      />
+    </>
   );
 };
-

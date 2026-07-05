@@ -4,6 +4,7 @@ import { useApp } from '../../context/useApp';
 import { CourseCard } from '../../components/common/CourseCard';
 import { StarRating } from '../../components/common/StarRating';
 import { ChevronDown, ChevronUp, Filter } from 'lucide-react';
+import { PageLoader } from '../../components/common/PageLoader';
 
 export const CoursesPage: React.FC = () => {
   const { courses, categories } = useApp();
@@ -110,6 +111,7 @@ export const CoursesPage: React.FC = () => {
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
 
   return (
+    courses.length === 0 ? <PageLoader message="Loading courses..." /> :
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-left font-sans">
       
       {/* Title Header */}

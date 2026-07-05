@@ -5,6 +5,7 @@ import { CourseCard } from '../../components/common/CourseCard';
 import { StarRating } from '../../components/common/StarRating';
 import { Compass, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { PageLoader } from '../../components/common/PageLoader';
 
 const HeroScene3D = lazy(() => import('../../components/common/HeroScene3D'));
 
@@ -30,6 +31,11 @@ export const LandingPage: React.FC = () => {
     { label: 'Instructors teaching', value: instructors.length.toLocaleString() },
     { label: 'Top-rated courses', value: courses.filter((course) => course.rate >= 4).length.toLocaleString() },
   ];
+
+  // Show branded loader while initial catalog data is fetching
+  if (courses.length === 0 && instructors.length === 0 && categories.length === 0) {
+    return <PageLoader message="Loading Byway..." />;
+  }
 
   return (
     <div className="bg-white">
